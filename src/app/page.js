@@ -4,8 +4,15 @@ import PostCard from "../components/feed/PostCard";
 import WelcomeBlock from "../components/home/WelcomeBlock";
 import { getFeed } from "../lib/api/feed";
 import { useAuth } from "@/lib/hooks/useAuthMock";
+import { getCurrentUser } from "@/lib/auth-server";
+import { redirect } from "next/navigation";
 
 export default async function Home() {
+  const user = await getCurrentUser();
+
+  // if (!user) {
+  //   redirect('/login');
+  // }
 
   // const { user } = useAuth();
   const { items } = await getFeed({ type: "forYou", limit: 2 });
@@ -25,14 +32,30 @@ export default async function Home() {
           Keep your photography, blog posts, and client-facing portfolio in one
           place.
         </p>
-        <div className="flex flex-wrap gap-3">
+
+        {
+          !user ? (
+            <Button href={'/login'} >Login to access feed</Button>
+          ) : (
+            <div className="flex flex-wrap gap-3">
+              <Button href="/feed">
+                Enter the feed
+              </Button>
+              <Button href="/learn" variant="outline">
+                Browse learn
+              </Button>
+            </div>
+          )
+        }
+
+        {/* <div className="flex flex-wrap gap-3">
           <Button href="/feed">
             Enter the feed
           </Button>
           <Button href="/learn" variant="outline">
             Browse learn
           </Button>
-        </div>
+        </div> */}
         <div className="grid sm:grid-cols-3 gap-4 pt-4">
           {[
             { label: "Creators active", value: "18k" },
@@ -51,12 +74,12 @@ export default async function Home() {
       </section>
 
       <div className="space-y-4">
-        <WelcomeBlock />
+        <WelcomeBlock checkUser={user} />
         <div className="card p-6 space-y-4">
           <div className="flex items-center justify-between">
             <h3 className="text-lg font-semibold">Latest from the feed</h3>
             <Link
-              href="/feed"
+              href={!user ? '/login' : '/feed'}
               className="text-sm text-emerald-300 hover:text-emerald-200"
             >
               View all →

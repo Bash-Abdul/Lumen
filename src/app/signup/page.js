@@ -3,10 +3,10 @@
 import { useState } from "react";
 import Link from "next/link";
 import Button from "../../components/common/Button";
-import { useAuth } from "../../lib/hooks/useAuthMock";
+import { useAuths } from "../../lib/hooks/useAuthMock";
 
 export default function SignupPage() {
-  const { setUser } = useAuth();
+  const { setUser } = useAuths();
   const [form, setForm] = useState({
     name: "New Photographer",
     username: "newuser",

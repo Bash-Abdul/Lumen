@@ -4,11 +4,11 @@ import { useEffect, useState } from "react";
 import Button from "../../components/common/Button";
 import HubHero from "../../components/hub/HubHero";
 import CollectionCard from "../../components/hub/CollectionCard";
-import { useAuth } from "../../lib/hooks/useAuthMock";
+import { useAuths } from "../../lib/hooks/useAuthMock";
 import { createCollection, getHub } from "../../lib/api/hub";
 
 export default function HubPage() {
-  const { user } = useAuth();
+  const { users } = useAuths();
   const [hub, setHub] = useState(null);
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
@@ -18,16 +18,16 @@ export default function HubPage() {
   });
 
   useEffect(() => {
-    if (!user?.username) return;
+    if (!users?.username) return;
     setLoading(true);
-    getHub(user.username)
+    getHub(users.username)
       .then(setHub)
       .finally(() => setLoading(false));
-  }, [user]);
+  }, [users]);
 
   const handleCreate = async (e) => {
     e.preventDefault();
-    const newCol = await createCollection(user.username, {
+    const newCol = await createCollection(users.username, {
       ...form,
       featured: "New",
     });
@@ -38,7 +38,7 @@ export default function HubPage() {
     setForm({ title: "", description: "", cover: "" });
   };
 
-  if (!user?.isCreator) {
+  if (!users?.isCreator) {
     return (
       <div className="card p-8 space-y-4">
         <p className="text-sm text-zinc-300">Hub is for creators only.</p>

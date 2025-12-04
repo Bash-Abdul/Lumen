@@ -5,12 +5,12 @@ import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import Avatar from "../common/Avatar";
 import Button from "../common/Button";
-import { useAuth } from "../../lib/hooks/useAuthMock";
+import { useAuths } from "../../lib/hooks/useAuthMock";
 
 export default function TopBar() {
   const pathname = usePathname();
   const router = useRouter();
-  const { user, setUser } = useAuth();
+  const { users, setUser } = useAuths();
   const [query, setQuery] = useState("");
 
   const handleSearch = (e) => {
@@ -59,17 +59,17 @@ export default function TopBar() {
             onClick={toggleCreator}
             className="hidden sm:inline-flex"
           >
-            {user?.isCreator ? "Creator On" : "Creator Off"}
+            {users?.isCreator ? "Creator On" : "Creator Off"}
           </Button>
-          <Link href={`/u/${user?.username || "you"}`}>
+          <Link href={`/u/${users?.username || "you"}`}>
             <div className="flex items-center gap-2">
-              <Avatar src={user?.avatar} size={40} />
+              <Avatar src={users?.avatar} size={40} />
               <div className="hidden sm:block text-left">
                 <p className="text-sm font-semibold text-white">
-                  {user?.name || "Guest"}
+                  {users?.name || "Guest"}
                 </p>
                 <p className="text-xs text-zinc-400">
-                  @{user?.username || "anon"}
+                  @{users?.username || "anon"}
                 </p>
               </div>
             </div>

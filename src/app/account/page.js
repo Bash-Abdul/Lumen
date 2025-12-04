@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Button from "../../components/common/Button";
-import { useAuth } from "../../lib/hooks/useAuthMock";
+import { useAuths } from "../../lib/hooks/useAuthMock";
 
 function Section({ title, children }) {
   return (
@@ -14,13 +14,14 @@ function Section({ title, children }) {
 }
 
 export default function AccountPage() {
-  const { user, setUser } = useAuth();
+  const { users, setUser } = useAuths();
   const [form, setForm] = useState({
-    name: user?.name || "",
-    username: user?.username || "",
-    bio: user?.bio || "",
-    location: user?.location || "",
+    name: users?.name || "",
+    username: users?.username || "",
+    bio: users?.bio || "",
+    location: users?.location || "",
   });
+  const [updateMock, setUpdateMock] = useState(false);
 
   const handleSave = (e) => {
     e.preventDefault();
@@ -83,10 +84,23 @@ export default function AccountPage() {
         <div className="space-y-4">
           <Section title="Account">
             <div className="space-y-2 text-sm text-zinc-300">
-              <p>Email: you@example.com</p>
-              <p>Password: •••••••• (placeholder)</p>
-              <Button variant="secondary" size="sm">
-                Update credentials (mock)
+              {
+                !updateMock ? (
+                  <>
+                  <p className="mb-4">Email: you@example.com</p>
+                  <p className="mb-4">Password: •••••••• (placeholder)</p>
+                  </>
+                ) : (
+                  <>
+                  <input type="email" className="p-2 bg-stone-900 block mb-2" placeholder="enter new email" />
+                  <input type="password" className="p-2 bg-stone-900 block mb-2" placeholder="enter new password" />
+                  </>
+                )
+              }
+              <Button onClick={()=> setUpdateMock(prev => !prev)} variant="secondary" size="sm">
+                {
+                  updateMock ? 'save update' : 'Update credentials (mock)'
+                }
               </Button>
               <p className="text-xs text-zinc-500">
                 Future endpoint: POST /api/account/update
@@ -98,17 +112,17 @@ export default function AccountPage() {
               Toggle to unlock Hub and portfolio tools.
             </p>
             <Button
-              variant={user?.isCreator ? "primary" : "secondary"}
+              variant={users?.isCreator ? "primary" : "secondary"}
               size="sm"
               onClick={() =>
                 setUser((prev) => ({ ...prev, isCreator: !prev?.isCreator }))
               }
             >
-              {user?.isCreator ? "Creator enabled" : "Enable creator"}
+              {users?.isCreator ? "Creator enabled" : "Enable creator"}
             </Button>
           </Section>
           <Section title="Plan">
-            <p className="text-sm text-zinc-300">Current plan: {user?.plan}</p>
+            <p className="text-sm text-zinc-300">Current plan: {users?.plan}</p>
             <p className="text-xs text-zinc-500">
               Billing endpoints will live under /api/billing and integrate a
               payment provider.

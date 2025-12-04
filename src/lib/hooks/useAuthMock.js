@@ -16,22 +16,22 @@ const initialUser = {
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(initialUser);
+  const [users, setUser] = useState(initialUser);
 
   const value = useMemo(
     () => ({
-      user,
+      users,
       setUser,
       login: (nextUser) => setUser(nextUser),
       logout: () => setUser(null),
     }),
-    [user]
+    [users]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
-export function useAuth() {
+export function useAuths() {
   const ctx = useContext(AuthContext);
   if (!ctx) {
     throw new Error("useAuth must be used within AuthProvider");

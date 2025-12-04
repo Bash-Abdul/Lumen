@@ -1,5 +1,6 @@
 // lib/prisma.js
-import { PrismaClient } from "../prisma/genarated/prisma"
+// import { PrismaClient } from "../prisma/generated/prisma"
+import { PrismaClient } from "@prisma/client"
 import { PrismaPg } from "@prisma/adapter-pg"
 
 const globalForPrisma = globalThis
@@ -12,6 +13,7 @@ export const prisma =
   globalForPrisma.prisma ||
   new PrismaClient({
     adapter,
+    log: ["query", "error", "warn"],
   })
 
 if (process.env.NODE_ENV !== "production") {

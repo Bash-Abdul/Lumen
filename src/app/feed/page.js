@@ -4,9 +4,30 @@ import FeedTabs from "../../components/feed/FeedTabs";
 import PostCard from "../../components/feed/PostCard";
 import Button from "../../components/common/Button";
 import { useFeed } from "../../lib/hooks/useFeed";
+import useAuth from "@/hooks/useAuth";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function FeedPage() {
   const { feedType, setFeedType, posts, loadMore, loading } = useFeed("forYou");
+
+  const router = useRouter();
+  const { user, isAuthenticated, loading: isLoading } = useAuth();
+
+  //   useEffect(() => {
+  //   if (!isLoading && !user) {
+  //     router.replace('/login');
+  //   }
+  // }, [user, isLoading, router]);
+
+  // // if (!user) {
+  // //   router.push('/login')
+  // //   return null;
+  // // }
+  // if (isLoading || !user || !isAuthenticated) {
+  //   return null; // or a spinner
+  // }
+
 
   return (
     <div className="space-y-6">
@@ -20,7 +41,7 @@ export default function FeedPage() {
             Personalised inspiration and work from people you follow.
           </p>
         </div>
-        <FeedTabs active={feedType} onChange={setFeedType} />
+        <FeedTabs isAuthenticated={isAuthenticated} active={feedType} onChange={setFeedType} />
       </div>
 
       <div className="grid grid-cols-3 gap-5">
