@@ -1,0 +1,214 @@
+enum Role {
+  VISITOR
+  USER
+  CREATOR
+  ADMIN
+}
+
+enum Visibility {
+  PUBLIC
+  UNLISTED
+  PRIVATE
+}
+
+enum Plan {
+  FREE
+  PRO
+  PRO_PLUS
+}
+
+enum PostType {
+  PHOTO
+  BLOG
+  REPOST
+}
+
+enum BlogStatus {
+  DRAFT
+  PUBLISHED
+}
+
+enum Provider {
+  STRIPE
+}
+
+model User {
+  id            String          @id @default(uuid()) @db.Uuid
+  email         String          @unique
+  passwordHash  String
+  role          Role            @default(USER)
+
+  profile       Profile?
+
+  // photos        Photo[]
+  // posts         Post[]
+  // likes         Like[]
+  // reposts       Repost[]
+  // blogPosts     BlogPost[]
+  // collections   HubCollection[]
+  // subscriptions Subscription[]
+  // auditLogs     AuditLog[]      @relation("AuditActor")
+
+  // following     Follow[]        @relation("UserFollowing")
+  // followers     Follow[]        @relation("UserFollowers")
+
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+}
+
+model Profile {
+  id          String   @id @db.Uuid
+  user        User     @relation(fields: [id], references: [id]) // 1 to 1, pk = fk
+  displayName String?
+  username    String   @unique
+  bio         String?
+  location    String?
+  avatarUrl   String?
+  website     String?
+  socials     Json?
+  isCreator   Boolean  @default(false)
+  plan        Plan     @default(FREE)
+  stats       Json?    // denormalised counters, for example postCount, likeCount
+}
+
+model Photo {
+  id         String        @id @default(uuid()) @db.Uuid
+  user       User          @relation(fields: [userId], references: [id])
+  userId     String        @db.Uuid
+
+  url        String
+  thumbUrl   String?
+  caption    String?
+  location   String?
+  exif       Json?
+  tags       String[]      @db.Text
+  visibility Visibility    @default(PUBLIC)
+
+  posts      Post[]
+
+  createdAt  DateTime      @default(now())
+}
+
+model Post {
+  id              String     @id @default(uuid()) @db.Uuid
+  user            User       @relation(fields: [userId], references: [id])
+  userId          String     @db.Uuid
+
+  photo           Photo?     @relation(fields: [photoId], references: [id])
+  photoId         String?    @db.Uuid
+
+  caption         String?
+  type            PostType   @default(PHOTO)
+
+  originalPost    Post?      @relation("RepostOf", fields: [originalPostId], references: [id])
+  originalPostId  String?    @db.Uuid
+  reposts         Post[]     @relation("RepostOf")
+
+  likes           Like[]
+  repostActions   Repost[]
+
+  createdAt       DateTime   @default(now())
+}
+
+model Like {
+  id        String   @id @default(uuid()) @db.Uuid
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String   @db.Uuid
+  post      Post     @relation(fields: [postId], references: [id])
+  postId    String   @db.Uuid
+  createdAt DateTime @default(now())
+
+  @@unique([userId, postId])
+}
+
+model Repost {
+  id        String   @id @default(uuid()) @db.Uuid
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String   @db.Uuid
+  post      Post     @relation(fields: [postId], references: [id])
+  postId    String   @db.Uuid
+  createdAt DateTime @default(now())
+
+  @@unique([userId, postId])
+}
+
+model Follow {
+  followerId String @db.Uuid
+  followingId String @db.Uuid
+
+  follower   User   @relation("UserFollowing", fields: [followerId], references: [id])
+  following  User   @relation("UserFollowers", fields: [followingId], references: [id])
+
+  createdAt  DateTime @default(now())
+
+  @@id([followerId, followingId]) // composite pk, forces uniqueness
+}
+
+model BlogPost {
+  id          String      @id @default(uuid()) @db.Uuid
+  author      User        @relation(fields: [userId], references: [id])
+  userId      String      @db.Uuid
+
+  slug        String      @unique
+  title       String
+  excerpt     String?
+  coverUrl    String?
+  content     String      // markdown or rich text
+  tags        String[]    @db.Text
+  publishedAt DateTime?
+  status      BlogStatus  @default(DRAFT)
+
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model HubCollection {
+  id            String           @id @default(uuid()) @db.Uuid
+  user          User             @relation(fields: [userId], references: [id])
+  userId        String           @db.Uuid
+
+  title         String
+  description   String?
+  coverUrl      String?
+  featuredLabel String?
+
+  photos        CollectionPhoto[]
+
+  createdAt     DateTime         @default(now())
+}
+
+model CollectionPhoto {
+  id           String        @id @default(uuid()) @db.Uuid
+  collection   HubCollection @relation(fields: [collectionId], references: [id])
+  collectionId String        @db.Uuid
+  photo        Photo         @relation(fields: [photoId], references: [id])
+  photoId      String        @db.Uuid
+  sortOrder    Int           @default(0)
+}
+
+model Subscription {
+  id                 String    @id @default(uuid()) @db.Uuid
+  user               User      @relation(fields: [userId], references: [id])
+  userId             String    @db.Uuid
+
+  provider           Provider  @default(STRIPE)
+  status             String
+  plan               Plan
+  currentPeriodEnd   DateTime?
+  metadata           Json?
+
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+}
+
+model AuditLog {
+  id         String   @id @default(uuid()) @db.Uuid
+  actor      User?    @relation("AuditActor", fields: [actorId], references: [id])
+  actorId    String?  @db.Uuid
+
+  action     String
+  targetType String
+  targetId   String
+  payload    Json?
+  createdAt  DateTime @default(now())
+}
