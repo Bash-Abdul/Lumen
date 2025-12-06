@@ -15,7 +15,10 @@ export default function BlogCard({ post }) {
           loading="lazy"
         />
       </div>
-      <div className="p-4 space-y-3">
+
+
+      <div className="">
+        <div className="p-4 space-y-3">
         <div className="flex items-center gap-3">
           <Avatar src={post.author?.avatar} size={36} />
           <div>
@@ -35,6 +38,7 @@ export default function BlogCard({ post }) {
             </span>
           ))}
         </div>
+      </div>
       </div>
     </Link>
   );

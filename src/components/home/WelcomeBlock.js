@@ -17,7 +17,7 @@ export default function WelcomeBlock({ checkUser }) {
         ) : (
           <>
             <p className="text-sm text-emerald-300">Welcome back</p>
-            <h3 className="text-xl font-semibold mt-1">{user.name || user?.email}</h3>
+            <h3 className="text-xl font-semibold mt-1">{user?.name || user?.email}</h3>
           </>
         )}
         <p className="text-sm text-zinc-400">

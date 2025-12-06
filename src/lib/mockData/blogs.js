@@ -4,7 +4,7 @@ export const blogs = [
     title: "Three Lighting Setups for Effortless Portraits",
     excerpt: "Softboxes, grids, and bounce tricks you can set up in five minutes.",
     cover:
-      "https://images.unsplash.com/photo-1504198458649-3128b932f49b?auto=format&fit=crop&w=1400&q=80",
+      "https://images.unsplash.com/photo-1452587925148-ce544e77e70d?auto=format&fit=crop&w=1400&q=80",
     author: {
       name: "Atlas Gray",
       avatar:
@@ -40,6 +40,23 @@ export const blogs = [
       "https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=1400&q=80",
     author: {
       name: "Nova Lumen",
+      avatar:
+        "https://images.unsplash.com/photo-1506898667547-42e1c9c1c1b3?auto=format&fit=crop&w=200&q=60",
+    },
+    tags: ["business", "pricing"],
+    published: "Aug 2024",
+    content:
+      "Start by defining deliverables. Charge for prep, shoot, and post.\n\nInclude usage terms in writing. Ask for 30-50% upfront. Over-communicate timelines and revisions.\n\nYou can add value by providing shot lists, scouting, and mood boards.",
+  },
+  {
+    slug: "pricing-your-first-shooting",
+    title: "Pricing Your First Paid Shoot",
+    excerpt:
+      "A concise checklist for new creators: scope, usage, buffer time, and deposits.",
+    cover:
+      "https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=1400&q=80",
+    author: {
+      name: "Nova Lumenson",
       avatar:
         "https://images.unsplash.com/photo-1506898667547-42e1c9c1c1b3?auto=format&fit=crop&w=200&q=60",
     },

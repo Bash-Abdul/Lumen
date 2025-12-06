@@ -1,9 +1,18 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { hashPassword } from "@/lib/password";
+import { getCurrentUser } from "@/lib/auth-server";
 
 export async function POST(req) {
+    
+    
  try {
+    const currentUser = await getCurrentUser();
+    // if user is already logged in, prevent registeration
+     if (currentUser) {
+        return NextResponse.json({error: 'User is already logged in'}, {status: 400});
+    }
+
     const body = await req.json();
 
     // destructure required field from req body
@@ -49,6 +58,7 @@ export async function POST(req) {
         select: { id: true, email: true} 
        }
     )
+
 
     // note: {select: { id: true, name: true, email: true} } over return NextResponse.json({ id: user.id, email: user.email }) as the former only returns selected fields while the latter retur
 

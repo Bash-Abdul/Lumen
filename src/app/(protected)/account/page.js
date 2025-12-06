@@ -1,8 +1,10 @@
 'use client';
 
 import { useState } from "react";
-import Button from "../../components/common/Button";
-import { useAuths } from "../../lib/hooks/useAuthMock";
+// import Button from "../../components/common/Button";
+import Button from "@/components/common/Button";
+// import { useAuths } from "../../lib/hooks/useAuthMock";
+import { useAuths } from "@/lib/hooks/useAuthMock";
 
 function Section({ title, children }) {
   return (

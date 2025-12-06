@@ -3,11 +3,11 @@
 import { useState } from "react";
 import Button from "../../../components/common/Button";
 import { useBlogs } from "../../../lib/hooks/useBlogs";
-import { useAuth } from "../../../lib/hooks/useAuthMock";
+import { useAuths } from "../../../lib/hooks/useAuthMock";
 
 export default function CreateBlogPage() {
   const { addBlog } = useBlogs();
-  const { user } = useAuth();
+  const { users } = useAuths();
   const [title, setTitle] = useState("");
   const [cover, setCover] = useState("");
   const [tags, setTags] = useState("workflow, lighting");
@@ -22,7 +22,7 @@ export default function CreateBlogPage() {
       cover,
       tags: tags.split(",").map((t) => t.trim()).filter(Boolean),
       content,
-      author: { name: user?.name, avatar: user?.avatar },
+      author: { name: users?.name, avatar: users?.avatar },
     });
     setStatus("Saved (mock). This would POST to /api/blogs.");
     setTitle("");

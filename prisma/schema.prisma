@@ -46,12 +46,13 @@ enum Role {
 // }
 
 model User {
-  id            String          @id @default(uuid()) @db.Uuid
-  email         String          @unique
-  passwordHash  String
-  role          Role            @default(USER)
+  id           String @id @default(uuid()) @db.Uuid
+  email        String @unique
+  passwordHash String
+  role         Role   @default(USER)
 
-  profile       Profile?
+  profile        Profile?
+  onboardingDone Boolean  @default(false)
 
   // photos        Photo[]
   // posts         Post[]
@@ -65,25 +66,24 @@ model User {
   // following     Follow[]        @relation("UserFollowing")
   // followers     Follow[]        @relation("UserFollowers")
 
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Profile {
-  id          String   @id @db.Uuid
-  user        User     @relation(fields: [id], references: [id]) // 1 to 1, pk = fk
+  id          String  @id @db.Uuid
+  user        User    @relation(fields: [id], references: [id]) // 1 to 1, pk = fk
   displayName String?
-  username    String   @unique
+  username    String  @unique
   bio         String?
   location    String?
   avatarUrl   String?
   website     String?
   socials     Json?
-  isCreator   Boolean  @default(false)
+  isCreator   Boolean @default(false)
   // plan        Plan     @default(FREE)
-  stats       Json?    // denormalised counters, for example postCount, likeCount
+  stats       Json? // denormalised counters, for example postCount, likeCount
 }
-
 
 /// Stores one time tokens for things like email verification
 /// or password reset. Used by NextAuth and custom flows.
@@ -92,10 +92,10 @@ model VerificationToken {
   identifier String
 
   /// The actual random token that gets emailed
-  token      String   @unique
+  token String @unique
 
   /// When this token expires and stops being valid
-  expires    DateTime
+  expires DateTime
 
   @@unique([identifier, token])
 }
