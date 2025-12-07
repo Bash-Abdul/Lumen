@@ -49,5 +49,5 @@ a {
 .card {
   background: linear-gradient(145deg, rgba(17, 24, 39, 0.9), rgba(15, 23, 42, 0.8));
   border: 1px solid var(--border);
-  border-radius: 16px;
+  /* border-radius: 16px; */
 }

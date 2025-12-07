@@ -6,7 +6,7 @@ import Avatar from "../common/Avatar";
 export default function BlogCard({ post }) {
   return (
     <Link href={`/learn/${post.slug}`} className="card overflow-hidden block">
-      <div className="h-48 w-full overflow-hidden">
+      <div className="h-56 w-full overflow-hidden">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={post.cover}

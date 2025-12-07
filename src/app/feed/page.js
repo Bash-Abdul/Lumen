@@ -44,7 +44,7 @@ export default function FeedPage() {
         <FeedTabs isAuthenticated={isAuthenticated} active={feedType} onChange={setFeedType} />
       </div>
 
-      <div className="grid grid-cols-3 gap-5">
+      <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
         {posts.map((post) => (
           <PostCard key={post.id} post={post} />
         ))}

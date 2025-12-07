@@ -22,9 +22,9 @@ export const authOptions = {
         }
 
         // tiny random delay, 100–250 ms
-        await new Promise((r) =>
-          setTimeout(r, 100 + Math.floor(Math.random() * 150))
-        );
+        // await new Promise((r) =>
+        //   setTimeout(r, 100 + Math.floor(Math.random() * 150))
+        // );
 
         const user = await prisma.user.findUnique({
           where: { email },
