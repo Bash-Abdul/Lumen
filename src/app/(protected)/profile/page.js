@@ -1,11 +1,12 @@
 'use client';
 
 import { useEffect, useMemo, useState } from "react";
-import Button from "../../components/common/Button";
-import ProfileTabs from "../../components/profile/ProfileTabs";
-import Avatar from "../../components/common/Avatar";
-import { useAuths } from "../../lib/hooks/useAuthMock";
-import { getProfile, updateProfile } from "../../lib/api/profile";
+import Button from "../../../components/common/Button";
+import ProfileTabs from "../../../components/profile/ProfileTabs";
+import Avatar from "../../../components/common/Avatar";
+import { useAuths } from "../../../lib/hooks/useAuthMock";
+import { getProfile, updateProfile } from "../../../lib/api/profile";
+import Link from "next/link";
 
 const TABS = [
   { key: "photos", label: "Recents" },
@@ -46,6 +47,7 @@ export default function ProfilePage() {
   const [showStats, setShowStats] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [showLinks, setShowLinks] = useState(false);
+  const [showCreate, setShowCreate] = useState(false);
   const [form, setForm] = useState({
     avatar: "",
     username: "",
@@ -155,7 +157,47 @@ export default function ProfilePage() {
         </div>
       </div>
 
-      {tab === "photos" && <ImageGrid items={profile.posts} />}
+      {tab === "photos" && (
+        <>
+          {profile.posts.length === 0 ? (
+            <div className="flex items-center justify-between border border-dashed border-zinc-800 rounded-xl p-4 bg-zinc-950/50">
+              <p className="text-sm text-zinc-400">No posts yet.</p>
+              <div className="relative">
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  onClick={() => setShowCreate((prev) => !prev)}
+                >
+                  ＋
+                </Button>
+                {showCreate && (
+                  <div className="absolute right-0 mt-2 w-48 rounded-lg border border-zinc-800 bg-zinc-950 shadow-xl z-10">
+                    <button
+                      className="w-full text-left px-3 py-2 text-sm text-zinc-200 hover:bg-zinc-900"
+                      onClick={() => {
+                        setShowCreate(false);
+                        alert("Placeholder: open photo upload flow");
+                      }}
+                    >
+                      New photo post
+                    </button>
+                    
+                    <Link
+                      href="/learn/new"
+                      className="block px-3 py-2 text-sm text-zinc-200 hover:bg-zinc-900"
+                      onClick={() => setShowCreate(false)}
+                    >
+                      New blog post
+                    </Link>
+                  </div>
+                )}
+              </div>
+            </div>
+          ) : (
+            <ImageGrid items={profile.posts} />
+          )}
+        </>
+      )}
       {tab === "reposts" && <ImageGrid items={profile.reposts} />}
 
       {showStats && (

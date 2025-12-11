@@ -12,6 +12,7 @@ export const blogs = [
     },
     tags: ["lighting", "portrait"],
     published: "Oct 2024",
+    status: "published",
     content:
       "Lighting does not need to be complicated. Start with one light, then add fill, then add separation.\n\nSetup 1: Window key, white bounce fill. Perfect for lifestyle.\nSetup 2: 3ft octa key, grid for direction. Bring in a silver fill card.\nSetup 3: Hard light kicker with diffusion front key. Push the contrast and mind your angles.",
   },
@@ -28,6 +29,7 @@ export const blogs = [
     },
     tags: ["workflow", "street"],
     published: "Sep 2024",
+    status: "published",
     content:
       "Treat your journal as a map, not a diary.\n\nTag each entry with time of day, weather, mood, and lens.\nUse voice notes while walking to capture ambient clues.\nEvery Sunday, plan next week based on the strongest frames.",
   },
@@ -45,6 +47,7 @@ export const blogs = [
     },
     tags: ["business", "pricing"],
     published: "Aug 2024",
+    status: "published",
     content:
       "Start by defining deliverables. Charge for prep, shoot, and post.\n\nInclude usage terms in writing. Ask for 30-50% upfront. Over-communicate timelines and revisions.\n\nYou can add value by providing shot lists, scouting, and mood boards.",
   },

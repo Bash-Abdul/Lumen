@@ -33,14 +33,24 @@
 //   );
 // }
 
+
 import Link from "next/link";
 import BlogCard from "../../components/blog/BlogCard";
 import Button from "../../components/common/Button";
-import { getBlogs } from "../../lib/api/blog";
 import Avatar from "@/components/common/Avatar";
+import { getBlogs } from "@/lib/api/blog";
+import { getAllPosts } from "@/lib/helpers/blog";
 
 export default async function LearnPage() {
-  const posts = await getBlogs();
+  
+   let posts = [];
+
+  try {
+  posts = await getAllPosts();
+  } catch (error) {
+    console.error("Failed to load blogs for Learn page", error);
+  }
+
 
   if (!posts || posts.length === 0) {
     return (
@@ -55,7 +65,12 @@ export default async function LearnPage() {
               Stories, lighting breakdowns, and creative business notes.
             </p>
           </div>
-          <Button href="/learn/new">Create post</Button>
+          <div className="flex gap-2">
+            <Button href="/learn/my-posts" variant="secondary">
+              My posts
+            </Button>
+            <Button href="/learn/new">Create post</Button>
+          </div>
         </div>
 
         <p className="text-sm text-zinc-400">No posts yet.</p>
@@ -77,7 +92,12 @@ export default async function LearnPage() {
             Stories, lighting breakdowns, and creative business notes.
           </p>
         </div>
-        <Button href="/learn/new">Create post</Button>
+        <div className="flex gap-2">
+          <Button href="/learn/my-posts" variant="secondary">
+            My posts
+          </Button>
+          <Button href="/learn/new">Create post</Button>
+        </div>
       </div>
 
       {/* Featured / latest post */}
@@ -109,7 +129,7 @@ export default async function LearnPage() {
                     {latestPost.author?.name || "Unknown author"}
                   </p>
                   <p className="text-xs text-zinc-500">
-                    {latestPost.published}
+                    {latestPost.publishedAt}
                   </p>
                 </div>
               </div>

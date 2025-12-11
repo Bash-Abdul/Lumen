@@ -7,7 +7,7 @@ export default function BlogContent({ post }) {
       <img
         src={post.cover}
         alt={post.title}
-        className="w-full h-72 object-cover"
+        className="w-full h-98 object-cover"
         loading="lazy"
       />
       <div className="p-6 space-y-6">

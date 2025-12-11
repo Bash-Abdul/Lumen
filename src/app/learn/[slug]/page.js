@@ -1,8 +1,13 @@
 import BlogContent from "../../../components/blog/BlogContent";
-import { getBlogBySlug } from "../../../lib/api/blog";
+import PostActions from "../../../components/blog/PostActions";
+import { getBlogBySlug } from "@/lib/helpers/blog";
+import { getCurrentUser } from "@/lib/auth-server";
 
 export default async function BlogDetailPage({ params }) {
-  const post = await getBlogBySlug(params.slug);
+  const resolvedParams = await params;
+  const post = await getBlogBySlug(resolvedParams?.slug);
+  const user = await getCurrentUser();
+  const isOwner = user && post?.author?.id ? post.author.id === user.id : post?.author?.name === user?.name;
 
   if (!post) {
     return (
@@ -14,6 +19,10 @@ export default async function BlogDetailPage({ params }) {
 
   return (
     <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <div />
+        {isOwner && <PostActions slug={post.slug} />}
+      </div>
       <BlogContent post={post} />
     </div>
   );

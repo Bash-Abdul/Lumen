@@ -6,15 +6,16 @@ import Button from "../common/Button";
 import { useAuths } from "../../lib/hooks/useAuthMock";
 import useAuth from "@/hooks/useAuth";
 import { use } from "react";
+import { House,  Globe, Search, User, Book, BriefcaseBusiness, Badge  } from 'lucide-react';
 
 const navItems = [
-  { label: "Home", href: "/" },
-  { label: "Feed", href: "/feed" },
-  { label: "Search", href: "/search" },
-  { label: "Profile", href: "/profile" },
-  { label: "Learn", href: "/learn" },
-  { label: "Hub", href: "/hub", requiresCreator: true },
-  { label: "Account", href: "/account", requiresAuth: true },
+  { label: "Home", href: "/", icon:  <House className="w-5" /> },
+  { label: "Feed", href: "/feed", icon:<Globe className="w-5" />  },
+  { label: "Search", href: "/search", icon: <Search className="w-5" /> },
+  { label: "Profile", href: "/profile", icon: <User className="w-5" /> },
+  { label: "Learn", href: "/learn", icon: <Book className="w-5" /> },
+  { label: "Hub", href: "/hub", requiresCreator: true, icon: <BriefcaseBusiness className="w-5" /> },
+  { label: "Account", href: "/account", requiresAuth: true, icon: <Badge className="w-5" /> },
 ];
 
 export default function Sidebar() {
@@ -59,7 +60,8 @@ export default function Sidebar() {
                     : "text-zinc-300 hover:bg-zinc-900",
                 ].join(" ")}
               >
-                <span>{item.label}</span>
+                <span className="text-sm">{item.icon}</span>
+                 <span>{item.label}</span>
               </Link>
             );
           })}

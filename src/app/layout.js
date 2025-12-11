@@ -3,6 +3,7 @@ import "./globals.css";
 import Sidebar from "../components/layout/Sidebar";
 import TopBar from "../components/layout/TopBar";
 import Providers from "./providers";
+import { Toaster } from "sonner";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -37,6 +38,7 @@ export default function RootLayout({ children }) {
               <main className="flex-1 px-6 py-6">{children}</main>
             </div>
           </div>
+          <Toaster position="bottom-right" />
         </Providers>
       </body>
     </html>
