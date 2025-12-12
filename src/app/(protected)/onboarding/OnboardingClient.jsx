@@ -44,7 +44,7 @@ export default function OnboardingClient({ initialProfile }) {
       router.push("/")
     } catch (err) {
       console.error("Onboarding submit error", err)
-      setError("Something went wrong")
+      setError("Something went wrong", err)
     } finally {
       setLoading(false)
     }

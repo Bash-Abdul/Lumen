@@ -2,12 +2,14 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { hashPassword } from "@/lib/password";
 import { getCurrentUser } from "@/lib/auth-server";
+import { AuthSignupSchema } from "@/lib/validation/auth";
 
 export async function POST(req) {
     
     
  try {
     const currentUser = await getCurrentUser();
+
     // if user is already logged in, prevent registeration
      if (currentUser) {
         return NextResponse.json({error: 'User is already logged in'}, {status: 400});
@@ -15,30 +17,43 @@ export async function POST(req) {
 
     const body = await req.json();
 
-    // destructure required field from req body
-    const {email, password} = body;
+    const parsedData = AuthSignupSchema.safeParse(body);
+
+    if (!parsedData.success) {
+        const firstIssue = parsedData.error.issues[0];
+        return NextResponse.json(
+          { ok: false, message: firstIssue?.message || "Invalid signup data" },
+          { status: 400 },
+        );
+    }
+
+
+
+    // destructure required field from parsedData
+    const {email, password} = parsedData.data;
+
 
 
     // check for missing fields || fields that were'nt inputted and return error if true
-    if (!email || !password) {
-        return NextResponse.json({message: 'Missing required field'}, {status: 400})
-    }
+    // if (!email || !password) {
+    //     return NextResponse.json({message: 'Missing required field'}, {status: 400})
+    // }
 
 
     // convert inputted email into lower case
-    const emailToLower = String(email).trim().toLowerCase();
+    // const emailToLower = String(email).trim().toLowerCase();
 
     // check on password to make sure password must at leaste be Password must be 8+ chars, include uppercase, lowercase, number and special char
-    const strongPasswordCheck = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
+    // const strongPasswordCheck = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
 
-    if (!strongPasswordCheck.test(password)){
-        return NextResponse.json({message: 'Password must be 8+ chars, include uppercase, lowercase, number and special char'}, {status: 400})
-    }
+    // if (!strongPasswordCheck.test(password)){
+    //     return NextResponse.json({message: 'Password must be 8+ chars, include uppercase, lowercase, number and special char'}, {status: 400})
+    // }
 
     // check if user already exists in DB using prisma
     const existingUser = await prisma.user.findUnique(
         {
-            where: {email: emailToLower},
+            where: {email},
             select: {id:true}
         }
     );
@@ -54,7 +69,7 @@ export async function POST(req) {
     // create user in db if existing user check becomes false
     const user = await prisma.user.create(
        {
-        data: {email: emailToLower, passwordHash: hashedPassword},
+        data: {email, passwordHash: hashedPassword},
         select: { id: true, email: true} 
        }
     )

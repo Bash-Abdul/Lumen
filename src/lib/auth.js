@@ -3,6 +3,7 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import prisma from "./prisma";
 // import bcrypt from "bcryptjs"
 import { verifyPassword } from "./password";
+import { AuthLoginSchema } from "./validation/auth";
 
 export const authOptions = {
   adapter: PrismaAdapter(prisma),
@@ -14,12 +15,22 @@ export const authOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        const email = credentials?.email?.trim().toLowerCase();
-        const password = credentials?.password;
+        const parsed = AuthLoginSchema.safeParse(credentials);
 
-        if (!email || !password) {
-          throw new Error("Missing credentials");
-        }
+    if (!parsed.success) {
+      const firstIssue = parsed.error.issues[0];
+      throw new Error(firstIssue?.message || "Invalid credentials");
+    }
+
+    const { email, password } = parsed.data;
+
+
+        // const email = credentials?.email?.trim().toLowerCase();
+        // const password = credentials?.password;
+
+        // if (!email || !password) {
+        //   throw new Error("Missing credentials");
+        // }
 
         // tiny random delay, 100–250 ms
         // await new Promise((r) =>

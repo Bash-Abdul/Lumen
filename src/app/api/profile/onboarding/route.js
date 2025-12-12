@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import prisma from "@/lib/prisma"
 import { getCurrentUser } from "@/lib/auth-server"
+import { OnboardingSchema } from "@/lib/validation/profile"
 
 export async function POST(req) {
   try {
@@ -36,38 +37,48 @@ export async function POST(req) {
     }
 
     const body = await req.json()
-    let { name, username, location, bio, avatar } = body || {}
 
-    if (!name || !username) {
+    const parsedData = OnboardingSchema.safeParse(body);
+
+    if (!parsedData.success) {
+      const firstIssue = parsed.error.issues[0];
       return NextResponse.json(
-        { ok: false, message: "Name and username are required" },
+        { ok: false, message: firstIssue?.message || "Invalid onboarding data" },
         { status: 400 },
-      )
+      );
     }
+    let { name, username, location, bio, avatar } = parsedData.data || {}
 
-    const displayName = String(name).trim()
+    // if (!name || !username) {
+    //   return NextResponse.json(
+    //     { ok: false, message: "Name and username are required" },
+    //     { status: 400 },
+    //   )
+    // }
 
-    let rawUsername = String(username).trim()
-    if (rawUsername.startsWith("@")) {
-      rawUsername = rawUsername.slice(1)
-    }
-    const normalizedUsername = rawUsername.toLowerCase()
+    // const displayName = String(name).trim()
 
-    const usernamePattern = /^[a-z0-9_]{3,20}$/
+    // let rawUsername = String(username).trim()
+    // if (rawUsername.startsWith("@")) {
+    //   rawUsername = rawUsername.slice(1)
+    // }
+    // const normalizedUsername = rawUsername.toLowerCase()
 
-    if (!usernamePattern.test(normalizedUsername)) {
-      return NextResponse.json(
-        {
-          ok: false,
-          message:
-            "Username must be 3 to 20 characters, lowercase letters, numbers or underscores",
-        },
-        { status: 400 },
-      )
-    }
+    // const usernamePattern = /^[a-z0-9_]{3,20}$/
+
+    // if (!usernamePattern.test(normalizedUsername)) {
+    //   return NextResponse.json(
+    //     {
+    //       ok: false,
+    //       message:
+    //         "Username must be 3 to 20 characters, lowercase letters, numbers or underscores",
+    //     },
+    //     { status: 400 },
+    //   )
+    // }
 
     const existingProfile = await prisma.profile.findUnique({
-      where: { username: normalizedUsername },
+      where: { username },
       select: { id: true },
     })
 
@@ -78,28 +89,28 @@ export async function POST(req) {
       )
     }
 
-    const safeBio = bio ? String(bio).trim() : null
-    const safeLocation = location ? String(location).trim() : null
-    const avatarUrl = avatar ? String(avatar).trim() : null
+    // const safeBio = bio ? String(bio).trim() : null
+    // const safeLocation = location ? String(location).trim() : null
+    // const avatarUrl = avatar ? String(avatar).trim() : null
 
     // Keep profile + onboarding flag in sync
     const [profile] = await prisma.$transaction([
       prisma.profile.upsert({
         where: { id: dbUser.id },
         update: {
-          displayName,
-          username: normalizedUsername,
-          bio: safeBio,
-          location: safeLocation,
-          avatarUrl,
+          displayName: name,
+          username,
+          bio: bio ?? null,
+          location: location ?? null,
+          avatarUrl: avatar ?? null,
         },
         create: {
           id: dbUser.id,
-          displayName,
-          username: normalizedUsername,
-          bio: safeBio,
-          location: safeLocation,
-          avatarUrl,
+          displayName: name,
+          username,
+          bio: bio ?? null,
+          location: location ?? null,
+          avatarUrl: avatar ?? null,
         },
         select: {
           id: true,
