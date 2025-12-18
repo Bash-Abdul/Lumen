@@ -19,8 +19,8 @@ export default async function Home() {
   // const { items } = await getFeed({ type: "forYou", limit: 2 });
 
   return (
-    <div className="grid grid-cols-1 xl:grid-cols-[1.3fr_1fr] gap-6">
-      <section className="card p-8 space-y-6 relative overflow-hidden">
+    <div className="grid grid-cols-1 xl:grid-cols-[1.3fr_1fr] gap-6 items-start">
+      <section className="card p-8 space-y-6 relative overflow-hidden h-fit self-start">
         <div className="absolute inset-0 bg-linear-to-br from-emerald-500/10 via-transparent to-blue-500/10 pointer-events-none" />
         <p className="text-xs uppercase tracking-[0.3em] text-emerald-300">
           Photography first
