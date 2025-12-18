@@ -7,6 +7,8 @@ import Avatar from "../../components/common/Avatar";
 import Button from "../../components/common/Button";
 import BlogCard from "../../components/blog/BlogCard";
 import { useSearch } from "../../lib/hooks/useSearch";
+import Link from "next/link";
+import FollowButton from "@/components/common/FollowButton";
 
 const SEARCH_TABS = [
   { key: "people", label: "People" },
@@ -16,17 +18,37 @@ const SEARCH_TABS = [
 
 function PersonCard({ user }) {
   return (
-    <div className="card p-4 flex items-center gap-4">
+    <Link href={`/u/${user.username}`} className="card p-4 flex items-center gap-4">
       <Avatar src={user.avatar} size={52} />
       <div className="flex-1">
         <p className="font-semibold">{user.name}</p>
         <p className="text-sm text-zinc-400">@{user.username}</p>
         <p className="text-xs text-zinc-500">{user.bio}</p>
       </div>
-      <Button size="sm" variant="secondary">
+      <Button  onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+
+          alert('followed');
+        }}>
         Follow
       </Button>
-    </div>
+      {/* <div
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+        }}
+      >
+        <FollowButton
+          targetUserId={user.userId}
+          initialFollowing={user.viewer?.isFollowing || false}
+          initialFollowerCount={user.followerCount || 0}
+          // isAuthenticated={isAuthenticated}
+          isAuthenticated={user.viewer?.isAuthenticated || false}
+          size="sm"
+        />
+      </div> */}
+    </Link>
   );
 }
 

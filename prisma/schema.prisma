@@ -18,23 +18,24 @@ enum Role {
   ADMIN
 }
 
-// enum Visibility {
-//   PUBLIC
-//   UNLISTED
-//   PRIVATE
-// }
-
+// Visibility for posts - currently all posts are PUBLIC
+enum Visibility {
+  PUBLIC
+  UNLISTED
+  PRIVATE
+}
 // enum Plan {
 //   FREE
 //   PRO
 //   PRO_PLUS
 // }
 
-// enum PostType {
-//   PHOTO
-//   BLOG
-//   REPOST
-// }
+// Type of post content
+enum PostType {
+  PHOTO      // Standard photo post
+  BLOG       // Blog post (already in use)
+  REPOST     // Reposted content from another user
+}
 
 enum BlogStatus {
   DRAFT
@@ -54,17 +55,25 @@ model User {
   profile        Profile?
   onboardingDone Boolean  @default(false)
 
-  // photos        Photo[]
-  // posts         Post[]
-  // likes         Like[]
-  // reposts       Repost[]
+// Photo and post relationships - user can create photos and posts
+  photos        Photo[]
+  posts         Post[]
+
+
+  // Social interactions - user can like and repost content
+  likes         Like[]
+  reposts       Repost[]
+
+
   blogPosts     BlogPost[]
+
   // collections   HubCollection[]
   // subscriptions Subscription[]
   // auditLogs     AuditLog[]      @relation("AuditActor")
 
-  // following     Follow[]        @relation("UserFollowing")
-  // followers     Follow[]        @relation("UserFollowers")
+  // Follow system - users can follow and be followed by others
+  following     Follow[]        @relation("UserFollowing")
+  followers     Follow[]        @relation("UserFollowers")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -100,78 +109,94 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-// model Photo {
-//   id         String        @id @default(uuid()) @db.Uuid
-//   user       User          @relation(fields: [userId], references: [id])
-//   userId     String        @db.Uuid
 
-//   url        String
-//   thumbUrl   String?
-//   caption    String?
-//   location   String?
-//   exif       Json?
-//   tags       String[]      @db.Text
-//   visibility Visibility    @default(PUBLIC)
+// Photo model - stores uploaded images with metadata
+// Each photo can be part of a post
 
-//   posts      Post[]
+model Photo {
+  id         String        @id @default(uuid()) @db.Uuid
+  user       User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     String        @db.Uuid
 
-//   createdAt  DateTime      @default(now())
-// }
+  url        String        // Full size image URL from Cloudinary
+  thumbUrl   String?       // Thumbnail URL for feed performance
+  caption    String?       // Optional caption (can be added later)
+  location   String?       // Optional location (can be added later)
+  exif       Json?         // Camera/photo metadata
+  tags       String[]      @db.Text // Searchable tags (can be added later)
+  visibility Visibility    @default(PUBLIC) // All posts public for now
 
-// model Post {
-//   id              String     @id @default(uuid()) @db.Uuid
-//   user            User       @relation(fields: [userId], references: [id])
-//   userId          String     @db.Uuid
+  posts      Post[]        // A photo can be in multiple posts (original + reposts)
 
-//   photo           Photo?     @relation(fields: [photoId], references: [id])
-//   photoId         String?    @db.Uuid
+  createdAt  DateTime      @default(now())
+}
 
-//   caption         String?
-//   type            PostType   @default(PHOTO)
 
-//   originalPost    Post?      @relation("RepostOf", fields: [originalPostId], references: [id])
-//   originalPostId  String?    @db.Uuid
-//   reposts         Post[]     @relation("RepostOf")
 
-//   likes           Like[]
-//   repostActions   Repost[]
+// Post model - represents content in the feed
+// Posts are created automatically when photos are uploaded
+model Post {
+  id              String     @id @default(uuid()) @db.Uuid
+  user            User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId          String     @db.Uuid
 
-//   createdAt       DateTime   @default(now())
-// }
+  photo           Photo?     @relation(fields: [photoId], references: [id], onDelete: Cascade)
+  photoId         String?    @db.Uuid
 
-// model Like {
-//   id        String   @id @default(uuid()) @db.Uuid
-//   user      User     @relation(fields: [userId], references: [id])
-//   userId    String   @db.Uuid
-//   post      Post     @relation(fields: [postId], references: [id])
-//   postId    String   @db.Uuid
-//   createdAt DateTime @default(now())
+  caption         String?    // Optional post caption
+  type            PostType   @default(PHOTO) // Type of post
 
-//   @@unique([userId, postId])
-// }
+  // Repost functionality - tracks original post when reposting
+  originalPost    Post?      @relation("RepostOf", fields: [originalPostId], references: [id], onDelete: Cascade)
+  originalPostId  String?    @db.Uuid
+  reposts         Post[]     @relation("RepostOf") // Posts that reposted this one
 
-// model Repost {
-//   id        String   @id @default(uuid()) @db.Uuid
-//   user      User     @relation(fields: [userId], references: [id])
-//   userId    String   @db.Uuid
-//   post      Post     @relation(fields: [postId], references: [id])
-//   postId    String   @db.Uuid
-//   createdAt DateTime @default(now())
+  // Social interactions on this post
+  likes           Like[]
+  repostActions   Repost[]   // Track who reposted
 
-//   @@unique([userId, postId])
-// }
+  createdAt       DateTime   @default(now())
+}
 
-// model Follow {
-//   followerId String @db.Uuid
-//   followingId String @db.Uuid
+// Like model - tracks user likes on posts
+// Unique constraint ensures user can only like a post once
+model Like {
+  id        String   @id @default(uuid()) @db.Uuid
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String   @db.Uuid
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId    String   @db.Uuid
+  createdAt DateTime @default(now())
 
-//   follower   User   @relation("UserFollowing", fields: [followerId], references: [id])
-//   following  User   @relation("UserFollowers", fields: [followingId], references: [id])
+  @@unique([userId, postId]) // User can only like a post once
+}
 
-//   createdAt  DateTime @default(now())
+// Repost model - tracks user reposts
+// Different from Post.reposts - this tracks the action, Post tracks the new post created
+model Repost {
+  id        String   @id @default(uuid()) @db.Uuid
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String   @db.Uuid
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId    String   @db.Uuid
+  createdAt DateTime @default(now())
 
-//   @@id([followerId, followingId]) // composite pk, forces uniqueness
-// }
+  @@unique([userId, postId]) // User can only repost a post once
+}
+
+// Follow model - tracks follow relationships between users
+// Composite primary key ensures uniqueness
+model Follow {
+  followerId String @db.Uuid
+  followingId String @db.Uuid
+
+  follower   User   @relation("UserFollowing", fields: [followerId], references: [id], onDelete: Cascade)
+  following  User   @relation("UserFollowers", fields: [followingId], references: [id], onDelete: Cascade)
+
+  createdAt  DateTime @default(now())
+
+  @@id([followerId, followingId]) // Composite pk, forces uniqueness - user can only follow another user once
+}
 
 model BlogPost {
   id          String      @id @default(uuid()) @db.Uuid

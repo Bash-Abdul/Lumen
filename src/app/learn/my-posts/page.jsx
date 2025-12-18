@@ -29,30 +29,6 @@ function StatusBadge({ status, published }) {
         redirect('/login');
     }
 
-    // const incomingHeaders = headers();
-
-    // const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/api/blogs/my-posts`, {cache: "no-store",  headers: {
-    //     cookie: incomingHeaders.get("cookie") ?? "",
-    //   },});
-
-    // if (!res.ok){
-    //     console.error("Failed to load blogs", res.status);
-    //     return (
-    //       <div className="space-y-4">
-    //         <p className="text-red-400 text-sm">
-    //           Failed to load your posts, status {res.status}
-    //         </p>
-    //       </div>
-    //     );
-    // }
-
-    // const data = await res.json();
-
-    // if (!data.ok) {
-    //     throw new Error(data.message || "Failed to fetch blogs");
-    //   }
-
-    // const myPosts = data.items || [];
     const myPosts = await getMyPosts(user.id);
 
     return (

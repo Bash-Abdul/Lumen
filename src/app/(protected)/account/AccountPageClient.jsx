@@ -5,7 +5,6 @@ import { useState, useEffect, useTransition } from "react";
 import Button from "@/components/common/Button";
 // import { useAuths } from "../../lib/hooks/useAuthMock";
 import { useAuths } from "@/lib/hooks/useAuthMock";
-import { getProfile, updateProfile } from "@/lib/api/profile";
 import api from "@/lib/api";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -42,7 +41,10 @@ export default function AccountPageClient({
 
     const { logout } = useAuth();
     const router = useRouter();
-    const { users, setUser } = useAuths();
+    // const { users, setUser } = useAuths();
+    const users = {
+        isCreator: true
+    }
     const [form, setForm] = useState({
         name: "",
         username: "",

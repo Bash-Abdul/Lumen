@@ -2,20 +2,21 @@ import Link from "next/link";
 import Button from "../components/common/Button";
 import PostCard from "../components/feed/PostCard";
 import WelcomeBlock from "../components/home/WelcomeBlock";
-import { getFeed } from "../lib/api/feed";
-import { useAuth } from "@/lib/hooks/useAuthMock";
 import { getCurrentUser } from "@/lib/auth-server";
 import { redirect } from "next/navigation";
+import { getFeedPosts } from "@/lib/helpers/feedData";
 
 export default async function Home() {
   const user = await getCurrentUser();
+
+  const {posts} = await getFeedPosts("forYou", 2)
 
   // if (!user) {
   //   redirect('/login');
   // }
 
   // const { user } = useAuth();
-  const { items } = await getFeed({ type: "forYou", limit: 2 });
+  // const { items } = await getFeed({ type: "forYou", limit: 2 });
 
   return (
     <div className="grid grid-cols-1 xl:grid-cols-[1.3fr_1fr] gap-6">
@@ -86,7 +87,7 @@ export default async function Home() {
             </Link>
           </div>
           <div className="space-y-4">
-            {items.map((post) => (
+            {posts.map((post) => (
               <PostCard key={post.id} post={post} />
             ))}
           </div>
