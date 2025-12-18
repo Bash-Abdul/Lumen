@@ -1,7 +1,7 @@
-import BlogContent from "../../../components/blog/BlogContent";
-import PostActions from "../../../components/blog/PostActions";
-import { getBlogBySlug } from "@/lib/helpers/blog";
-import { getCurrentUser } from "@/lib/auth-server";
+import BlogContent from "../../../features/blog/components/BlogContent";
+import PostActions from "../../../features/blog/components/PostActions";
+import { getBlogBySlug } from "@/server/services/blog";
+import { getCurrentUser } from "@/server/auth/auth-server";
 
 export default async function BlogDetailPage({ params }) {
   const resolvedParams = await params;

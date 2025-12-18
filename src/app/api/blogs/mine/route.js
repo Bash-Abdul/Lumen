@@ -1,8 +1,8 @@
 // // src/app/api/blog/mine/route.js
 // import { NextResponse } from "next/server";
-// import prisma from "@/lib/prisma";
-// import { getCurrentUser } from "@/lib/auth-server";
-// import { BlogStatusSchema } from "@/lib/validation/blog";
+// import prisma from "@/server/db/prisma";
+// import { getCurrentUser } from "@/server/auth/auth-server";
+// import { BlogStatusSchema } from "@/features/blog/validation/blog";
 
 // // GET /api/blog/mine - posts belonging to logged-in user
 // export async function GET(req) {
@@ -51,9 +51,9 @@
 
 // // src/app/api/blog/mine/route.js
 // import { NextResponse } from "next/server";
-// import prisma from "@/lib/prisma";
-// import { getCurrentUser } from "@/lib/auth-server";
-// import { BlogStatusSchema } from "@/lib/validation/blog";
+// import prisma from "@/server/db/prisma";
+// import { getCurrentUser } from "@/server/auth/auth-server";
+// import { BlogStatusSchema } from "@/features/blog/validation/blog";
 
 // // GET /api/blog/mine - posts belonging to logged in user
 // export async function GET(req) {
@@ -114,9 +114,9 @@
 
 // // ========================================================
 import { NextResponse } from "next/server";
-import prisma from "@/lib/prisma";
-import { getCurrentUser } from "@/lib/auth-server";
-// import { BlogStatusSchema } from "@/lib/validation/blog";
+import prisma from "@/server/db/prisma";
+import { getCurrentUser } from "@/server/auth/auth-server";
+// import { BlogStatusSchema } from "@/features/blog/validation/blog";
 
 // GET /api/blog/mine - posts belonging to logged in user
 export async function GET(req) {

@@ -2,8 +2,8 @@
 
 // import { useState } from "react";
 // import Link from "next/link";
-// import Button from "../../components/common/Button";
-// import { useAuths } from "../../lib/hooks/useAuthMock";
+// import Button from "../../shared/ui/Button";
+// import { useAuths } from "../../@/features/auth/hooks/useAuthMock";
 
 // export default function SignupPage() {
 //   const { setUser } = useAuths();
@@ -97,9 +97,9 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import Button from "../../../components/common/Button"
+import Button from "../../../shared/ui/Button"
 // update this path to match where you put the hook
-import useAuth from "@/hooks/useAuth"
+import useAuth from "@/features/auth/hooks/useAuth"
 
 export default function SignupPage() {
   const router = useRouter()

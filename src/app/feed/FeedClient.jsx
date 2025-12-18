@@ -3,9 +3,9 @@
 import { useEffect, useMemo, useState, useTransition, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-import FeedTabs from "@/components/feed/FeedTabs";
-import PostCard from "@/components/feed/PostCard";
-import Button from "@/components/common/Button";
+import FeedTabs from "@/features/feed/components/FeedTabs";
+import PostCard from "@/features/feed/components/PostCard";
+import Button from "@/shared/ui/Button";
 import { toast } from "sonner";
 
 export default function FeedClient({

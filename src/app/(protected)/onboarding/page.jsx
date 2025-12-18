@@ -1,8 +1,8 @@
 // 'use client';
 
 // import { useState } from "react";
-// import Button from "../../../components/common/Button";
-// import { useAuths } from "../../../lib/hooks/useAuthMock";
+// import Button from "../../../shared/ui/Button";
+// import { useAuths } from "../../../@/features/auth/hooks/useAuthMock";
 
 // export default function OnboardingPage() {
 //   const { setUser } = useAuths();
@@ -93,8 +93,8 @@
 
 // app/(protected)/onboarding/page.jsx
 import { redirect } from "next/navigation"
-import prisma from "@/lib/prisma"
-import { getCurrentUser } from "@/lib/auth-server"
+import prisma from "@/server/db/prisma"
+import { getCurrentUser } from "@/server/auth/auth-server"
 import OnboardingClient from "./OnboardingClient"
 
 export default async function OnboardingPage() {

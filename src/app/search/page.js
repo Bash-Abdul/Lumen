@@ -2,13 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import Tabs from "../../components/common/Tabs";
-import Avatar from "../../components/common/Avatar";
-import Button from "../../components/common/Button";
-import BlogCard from "../../components/blog/BlogCard";
-import { useSearch } from "../../lib/hooks/useSearch";
+import Tabs from "../../shared/ui/Tabs";
+import Avatar from "../../shared/ui/Avatar";
+import Button from "../../shared/ui/Button";
+import BlogCard from "../../features/blog/components/BlogCard";
+import { useSearch } from "../../features/search/hooks/useSearch";
 import Link from "next/link";
-import FollowButton from "@/components/common/FollowButton";
+import FollowButton from "@/shared/ui/FollowButton";
 
 const SEARCH_TABS = [
   { key: "people", label: "People" },
@@ -18,22 +18,17 @@ const SEARCH_TABS = [
 
 function PersonCard({ user }) {
   return (
-    <Link href={`/u/${user.username}`} className="card p-4 flex items-center gap-4">
-      <Avatar src={user.avatar} size={52} />
-      <div className="flex-1">
-        <p className="font-semibold">{user.name}</p>
-        <p className="text-sm text-zinc-400">@{user.username}</p>
-        <p className="text-xs text-zinc-500">{user.bio}</p>
-      </div>
-      <Button  onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-
-          alert('followed');
-        }}>
-        Follow
-      </Button>
-      {/* <div
+    <div className="card p-4 flex items-center gap-4">
+      <Link href={`/${user.username}`} className="flex items-center gap-4 flex-1">
+        <Avatar src={user.avatar} size={52} />
+        <div className="flex-1">
+          <p className="font-semibold">{user.name}</p>
+          <p className="text-sm text-zinc-400">@{user.username}</p>
+          {user.bio && <p className="text-xs text-zinc-500 mt-1">{user.bio}</p>}
+        </div>
+      </Link>
+      
+      <div
         onClick={(e) => {
           e.preventDefault();
           e.stopPropagation();
@@ -43,12 +38,11 @@ function PersonCard({ user }) {
           targetUserId={user.userId}
           initialFollowing={user.viewer?.isFollowing || false}
           initialFollowerCount={user.followerCount || 0}
-          // isAuthenticated={isAuthenticated}
           isAuthenticated={user.viewer?.isAuthenticated || false}
           size="sm"
         />
-      </div> */}
-    </Link>
+      </div>
+    </div>
   );
 }
 

@@ -2,8 +2,8 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import Button from "../../../components/common/Button"
-import api from "@/lib/api"
+import Button from "../../../shared/ui/Button"
+import api from "@/shared/lib/api"
 
 export default function OnboardingClient({ initialProfile }) {
   const router = useRouter()

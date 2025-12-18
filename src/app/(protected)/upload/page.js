@@ -1,4 +1,4 @@
-import PhotoUpload from "@/components/upload/PhotoUpload";
+import PhotoUpload from "@/features/upload/components/PhotoUpload";
 
 export default async function UploadPage() {
   

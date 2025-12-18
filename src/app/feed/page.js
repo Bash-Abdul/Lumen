@@ -1,10 +1,10 @@
 // 'use client';
 
-// import FeedTabs from "../../components/feed/FeedTabs";
-// import PostCard from "../../components/feed/PostCard";
-// import Button from "../../components/common/Button";
-// import { useFeed } from "../../lib/hooks/useFeed";
-// import useAuth from "@/hooks/useAuth";
+// import FeedTabs from "../../features/feed/components/FeedTabs";
+// import PostCard from "../../features/feed/components/PostCard";
+// import Button from "../../shared/ui/Button";
+// import { useFeed } from "../../features/feed/hooks/useFeed";
+// import useAuth from "@/features/auth/hooks/useAuth";
 // import { useRouter } from "next/navigation";
 // import { useEffect } from "react";
 
@@ -59,9 +59,9 @@
 // }
 
 
-import { getCurrentUser } from "@/lib/auth-server";
-// import { getFeedPosts } from "@/lib/helpers/feedData";
-import { getFeedPosts } from "@/lib/helpers/feedData";
+import { getCurrentUser } from "@/server/auth/auth-server";
+// import { getFeedPosts } from "@/server/services/feedData";
+import { getFeedPosts } from "@/server/services/feedData";
 import FeedClient from "./FeedClient";
 
 export default async function FeedPage({ searchParams }) {

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getFeedPosts } from "@/lib/helpers/feedData";
+import { getFeedPosts } from "@/server/services/feedData";
 
 export async function GET(request) {
   try {

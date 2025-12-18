@@ -1,6 +1,6 @@
 // app/api/search/route.js
 import { NextResponse } from "next/server";
-import { searchAll } from "@/lib/helpers/search";
+import { searchAll } from "@/server/services/search";
 
 export async function GET(req) {
   try {

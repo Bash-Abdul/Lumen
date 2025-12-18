@@ -3,10 +3,10 @@
 
 import { useState, useMemo } from "react";
 import Link from "next/link";
-import Button from "@/components/common/Button";
-import Avatar from "@/components/common/Avatar";
-import ProfileTabs from "@/components/profile/ProfileTabs";
-import FollowButton from "@/components/common/FollowButton";
+import Button from "@/shared/ui/Button";
+import Avatar from "@/shared/ui/Avatar";
+import ProfileTabs from "@/features/profile/components/ProfileTabs";
+import FollowButton from "@/shared/ui/FollowButton";
 
 const TABS = [
   { key: "photos", label: "Photos" },
@@ -148,16 +148,16 @@ export default function PublicProfileClient({ profile, isOwnProfile }) {
               </Button>
             ) : (
               <>
-                  {/* <FollowButton
+                  <FollowButton
                   targetUserId={profile.userId}
                   initialFollowing={profile.viewer?.isFollowing || false}
                   initialFollowerCount={stats.followers}
                   isAuthenticated={profile.viewer?.isAuthenticated || false}
                   size="sm"
-                /> */}
-                <Button variant="outline" size="sm">
+                />
+                {/* <Button variant="outline" size="sm">
                   Follow
-                </Button>
+                </Button> */}
                 <Button variant="outline" size="sm">
                   Message
                 </Button>

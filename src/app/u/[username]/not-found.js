@@ -1,6 +1,6 @@
 // app/u/[username]/not-found.js
 import Link from "next/link";
-import Button from "@/components/common/Button";
+import Button from "@/shared/ui/Button";
 
 export default function NotFound() {
   return (

@@ -5,19 +5,19 @@ import { useState, useMemo, useTransition, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import Button from "@/components/common/Button";
-import Avatar from "@/components/common/Avatar";
-import ProfileTabs from "@/components/profile/ProfileTabs";
-import FollowButton from "@/components/common/FollowButton";
+import Button from "@/shared/ui/Button";
+import Avatar from "@/shared/ui/Avatar";
+import ProfileTabs from "@/features/profile/components/ProfileTabs";
+import FollowButton from "@/shared/ui/FollowButton";
 // import { updateProfile } from "@/actions/profile";
-import { updateProfile } from "@/lib/actions (for mutations only, server actions)/profileActions";
-// import UploadModal from "@/components/feed/UploadModal";
+import { updateProfile } from "@/server/actions/profileActions";
+// import UploadModal from "@/features/feed/components/UploadModal";
 
-import EditProfileDrawer from "@/components/profile/EditProfileDrawer";
-import ImageGrid from "@/components/profile/ImageGrid";
-import LinksModal from "@/components/profile/LinksModal";
-import StatsModal from "@/components/profile/StatsModal";
-import Stat from "@/components/profile/Stat";
+import EditProfileDrawer from "@/features/profile/components/EditProfileDrawer";
+import ImageGrid from "@/features/profile/components/ImageGrid";
+import LinksModal from "@/features/profile/components/LinksModal";
+import StatsModal from "@/features/profile/components/StatsModal";
+import Stat from "@/features/profile/components/Stat";
 
 const TABS = [
   { key: "photos", label: "Recents" },

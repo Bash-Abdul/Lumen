@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import prisma from "@/lib/prisma";
-import { getCurrentUser } from "@/lib/auth-server";
-import { getMyPosts } from "@/lib/helpers/blog";
+import prisma from "@/server/db/prisma";
+import { getCurrentUser } from "@/server/auth/auth-server";
+import { getMyPosts } from "@/server/services/blog";
 
 // const MapPosts = (post) => (
 //     {

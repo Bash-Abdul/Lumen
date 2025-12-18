@@ -1,12 +1,12 @@
 // "use client";
 
 // import { useState, useEffect } from "react";
-// // import Button from "../../components/common/Button";
-// import Button from "@/components/common/Button";
-// // import { useAuths } from "../../lib/hooks/useAuthMock";
-// import { useAuths } from "@/lib/hooks/useAuthMock";
-// import { getProfile, updateProfile } from "@/lib/api/profile";
-// import api from "@/lib/api";
+// // import Button from "../../shared/ui/Button";
+// import Button from "@/shared/ui/Button";
+// // import { useAuths } from "../../@/features/auth/hooks/useAuthMock";
+// import { useAuths } from "@/features/auth/hooks/useAuthMock";
+// import { getProfile, updateProfile } from "@/shared/lib/api/profile";
+// import api from "@/shared/lib/api";
 // import { useRouter } from "next/navigation";
 
 // function Section({ title, children }) {
@@ -249,13 +249,13 @@
 
 // app/account/page.tsx
 import { redirect } from "next/navigation";
-import prisma from "@/lib/prisma";
-import { getCurrentUser } from "@/lib/auth-server";
+import prisma from "@/server/db/prisma";
+import { getCurrentUser } from "@/server/auth/auth-server";
 import AccountPageClient from "./AccountPageClient"; // client component
 // import { updateAccount } from "./actions";
-import { updateAccount } from "@/lib/actions (for mutations only, server actions)/profileActions";
-// import { getAccount } from "@/lib/helpers/account";
-import { getAccount } from "@/lib/helpers/account";
+import { updateAccount } from "@/server/actions/profileActions";
+// import { getAccount } from "@/server/services/account";
+import { getAccount } from "@/server/services/account";
 
 export default async function AccountPage() {
   const user = await getCurrentUser();

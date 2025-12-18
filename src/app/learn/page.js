@@ -1,8 +1,8 @@
 import Link from "next/link";
-import BlogCard from "../../components/blog/BlogCard";
-import Button from "../../components/common/Button";
-import Avatar from "@/components/common/Avatar";
-import { getAllPosts } from "@/lib/helpers/blog";
+import BlogCard from "../../features/blog/components/BlogCard";
+import Button from "../../shared/ui/Button";
+import Avatar from "@/shared/ui/Avatar";
+import { getAllPosts } from "@/server/services/blog";
 
 export const revalidate = 60; // seconds
 

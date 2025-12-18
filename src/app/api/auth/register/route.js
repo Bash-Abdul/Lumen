@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
-import prisma from "@/lib/prisma";
-import { hashPassword } from "@/lib/password";
-import { getCurrentUser } from "@/lib/auth-server";
-import { AuthSignupSchema } from "@/lib/validation/auth";
+import prisma from "@/server/db/prisma";
+import { hashPassword } from "@/server/auth/password";
+import { getCurrentUser } from "@/server/auth/auth-server";
+import { AuthSignupSchema } from "@/features/auth/validation/auth";
 
 export async function POST(req) {
     

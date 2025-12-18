@@ -1,6 +1,6 @@
-import { getCurrentUser } from "@/lib/auth-server";
+import { getCurrentUser } from "@/server/auth/auth-server";
 import { redirect } from "next/navigation";
-import { getBlogBySlug } from "@/lib/helpers/blog";
+import { getBlogBySlug } from "@/server/services/blog";
 import EditBlogForm from "./EditBlogForm";
 
 export default async function EditPostPage({ params }){

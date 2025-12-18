@@ -2,10 +2,9 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import Button from "../../../components/common/Button";
-// import { useAuth } from "../../lib/hooks/useAuthMock";
-import { login as mockLogin } from "../../../lib/api/auth";
-import useAuth from "@/hooks/useAuth";
+import Button from "../../../shared/ui/Button";
+// import { useAuth } from "../../@/features/auth/hooks/useAuthMock";
+import useAuth from "@/features/auth/hooks/useAuth";
 import { useRouter } from "next/navigation"
 import { Eye } from 'lucide-react';
 

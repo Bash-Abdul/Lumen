@@ -1,6 +1,6 @@
-import HubHero from "../../../components/hub/HubHero";
-import CollectionCard from "../../../components/hub/CollectionCard";
-import { getHub } from "../../../lib/api/hub";
+import HubHero from "../../../features/hub/components/HubHero";
+import CollectionCard from "../../../features/hub/components/CollectionCard";
+import { getHub } from "../../../shared/lib/api/hub";
 
 export default async function PublicHubPage({ params }) {
   const hub = await getHub(params.username);

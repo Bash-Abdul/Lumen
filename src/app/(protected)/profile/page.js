@@ -1,7 +1,7 @@
 // app/profile/page.js
-import { getCurrentUser } from "@/lib/auth-server";
+import { getCurrentUser } from "@/server/auth/auth-server";
 import { redirect } from "next/navigation";
-import { getProfile } from "@/lib/helpers/profile";
+import { getProfile } from "@/server/services/profile";
 import ProfileClient from "./ProfileClient";
 
 export default async function ProfilePage() {
@@ -41,11 +41,11 @@ export default async function ProfilePage() {
 
 // import { useEffect, useMemo, useState } from "react";
 // import Link from "next/link";
-// import Button from "../../../components/common/Button";
-// import ProfileTabs from "../../../components/profile/ProfileTabs";
-// import Avatar from "../../../components/common/Avatar";
-// import { useAuths } from "../../../lib/hooks/useAuthMock";
-// import { getProfile, updateProfile } from "../../../lib/api/profile";
+// import Button from "../../../shared/ui/Button";
+// import ProfileTabs from "../../../features/profile/components/ProfileTabs";
+// import Avatar from "../../../shared/ui/Avatar";
+// import { useAuths } from "../../../@/features/auth/hooks/useAuthMock";
+// import { getProfile, updateProfile } from "../../../shared/lib/api/profile";
 
 // const TABS = [
 //   { key: "photos", label: "Recents" },

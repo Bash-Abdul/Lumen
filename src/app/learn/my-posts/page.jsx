@@ -1,11 +1,11 @@
 import Link from "next/link";
-import Button from "../../../components/common/Button";
-import Avatar from "../../../components/common/Avatar";
-import { getCurrentUser } from "@/lib/auth-server";
+import Button from "../../../shared/ui/Button";
+import Avatar from "../../../shared/ui/Avatar";
+import { getCurrentUser } from "@/server/auth/auth-server";
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";
-import { getMyPosts } from "@/lib/helpers/blog";
-import PostActions from "../../../components/blog/PostActions";
+import { getMyPosts } from "@/server/services/blog";
+import PostActions from "../../../features/blog/components/PostActions";
 
 function StatusBadge({ status, published }) {
     const isPublished = !!published;

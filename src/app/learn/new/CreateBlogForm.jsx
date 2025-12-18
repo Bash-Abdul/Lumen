@@ -3,8 +3,8 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { createPost } from "@/lib/actions (for mutations only, server actions)/blogActions";
-import Button from "@/components/common/Button";
+import { createPost } from "@/server/actions/blogActions";
+import Button from "@/shared/ui/Button";
 import { toast } from "sonner"; // optional
 
 export default function CreateBlogForm() {

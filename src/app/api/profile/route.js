@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
-import prisma from "@/lib/prisma"
-import { getCurrentUser } from "@/lib/auth-server"
-import { ProfileUpdateSchema } from "@/lib/validation/profile"
+import prisma from "@/server/db/prisma"
+import { getCurrentUser } from "@/server/auth/auth-server"
+import { ProfileUpdateSchema } from "@/features/profile/validation/profile"
 
 export async function GET() {
   const currentUser = await getCurrentUser()

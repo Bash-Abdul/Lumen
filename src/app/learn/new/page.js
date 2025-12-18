@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { getCurrentUser } from "@/lib/auth-server";
+import { getCurrentUser } from "@/server/auth/auth-server";
 import CreateBlogForm from "./CreateBlogForm";
 
 export default async function NewBlogPage() {

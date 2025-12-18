@@ -1,14 +1,14 @@
 "use client";
 
 import { useState, useEffect, useTransition } from "react";
-// import Button from "../../components/common/Button";
-import Button from "@/components/common/Button";
-// import { useAuths } from "../../lib/hooks/useAuthMock";
-import { useAuths } from "@/lib/hooks/useAuthMock";
-import api from "@/lib/api";
+// import Button from "../../shared/ui/Button";
+import Button from "@/shared/ui/Button";
+// import { useAuths } from "../../@/features/auth/hooks/useAuthMock";
+import { useAuths } from "@/features/auth/hooks/useAuthMock";
+import api from "@/shared/lib/api";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import useAuth from "@/hooks/useAuth";
+import useAuth from "@/features/auth/hooks/useAuth";
 import { signOut } from "next-auth/react";
 
 function Section({ title, children }) {

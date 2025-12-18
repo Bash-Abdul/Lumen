@@ -1,8 +1,8 @@
-// import ProfileTabs from "../../../components/profile/ProfileTabs";
-// import PostCard from "../../../components/feed/PostCard";
-// import BlogCard from "../../../components/blog/BlogCard";
-// import Avatar from "../../../components/common/Avatar";
-// import { getProfile } from "../../../lib/api/profile";
+// import ProfileTabs from "../../../features/profile/components/ProfileTabs";
+// import PostCard from "../../../features/feed/components/PostCard";
+// import BlogCard from "../../../features/blog/components/BlogCard";
+// import Avatar from "../../../shared/ui/Avatar";
+// import { getProfile } from "../../../shared/lib/api/profile";
 
 // function ImageGrid({ items = [] }) {
 //   return (
@@ -164,8 +164,8 @@
 
 // app/u/[username]/page.js
 import { notFound } from "next/navigation";
-import { getCurrentUser } from "@/lib/auth-server";
-import { getPublicProfile } from "@/lib/helpers/profile";
+import { getCurrentUser } from "@/server/auth/auth-server";
+import { getPublicProfile } from "@/server/services/profile";
 import PublicProfileClient from "./PublicProfileClient";
 
 export default async function PublicProfilePage({ params }) {
@@ -179,13 +179,13 @@ export default async function PublicProfilePage({ params }) {
   }
 
   // Check if viewing own profile
-  const currentUser = await getCurrentUser();
-  const isOwnProfile = currentUser?.id === profile.id;
+  // const currentUser = await getCurrentUser();
+  // const isOwnProfile = currentUser?.id === profile.id;
 
   return (
     <PublicProfileClient 
       profile={profile} 
-      isOwnProfile={isOwnProfile}
+      // isOwnProfile={isOwnProfile}
     />
   );
 }

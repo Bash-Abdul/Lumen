@@ -1,11 +1,11 @@
 'use client';
 
 import { useEffect, useState } from "react";
-import Button from "../../components/common/Button";
-import HubHero from "../../components/hub/HubHero";
-import CollectionCard from "../../components/hub/CollectionCard";
-import { useAuths } from "../../lib/hooks/useAuthMock";
-import { createCollection, getHub } from "../../lib/api/hub";
+import Button from "@/shared/ui/Button";
+import HubHero from "@/features/hub/components/HubHero";
+import CollectionCard from "@/features/hub/components/CollectionCard";
+import { useAuths } from "@/features/auth/hooks/useAuthMock";
+// import { createCollection, getHub } from "@/shared/lib/api/hub";
 
 export default function HubPage() {
   const { users } = useAuths();
@@ -17,25 +17,25 @@ export default function HubPage() {
     cover: "",
   });
 
-  useEffect(() => {
-    if (!users?.username) return;
-    setLoading(true);
-    getHub(users.username)
-      .then(setHub)
-      .finally(() => setLoading(false));
-  }, [users]);
+  // useEffect(() => {
+  //   if (!users?.username) return;
+  //   setLoading(true);
+  //   getHub(users.username)
+  //     .then(setHub)
+  //     .finally(() => setLoading(false));
+  // }, [users]);
 
   const handleCreate = async (e) => {
     e.preventDefault();
-    const newCol = await createCollection(users.username, {
-      ...form,
-      featured: "New",
-    });
-    setHub((prev) => ({
-      ...prev,
-      collections: [newCol, ...(prev?.collections || [])],
-    }));
-    setForm({ title: "", description: "", cover: "" });
+    // const newCol = await createCollection(users.username, {
+    //   ...form,
+    //   featured: "New",
+    // });
+    // setHub((prev) => ({
+    //   ...prev,
+    //   collections: [newCol, ...(prev?.collections || [])],
+    // }));
+    // setForm({ title: "", description: "", cover: "" });
   };
 
   if (!users?.isCreator) {

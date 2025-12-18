@@ -1,8 +1,8 @@
 // src/app/api/blog/route.js
 import { NextResponse } from "next/server";
-import prisma from "@/lib/prisma";
-import { getCurrentUser } from "@/lib/auth-server";
-import { BlogCreateSchema } from "@/lib/validation/blog";
+import prisma from "@/server/db/prisma";
+import { getCurrentUser } from "@/server/auth/auth-server";
+import { BlogCreateSchema } from "@/features/blog/validation/blog";
 
 // basic slug helper
 function slugify(title) {

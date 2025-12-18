@@ -1,10 +1,10 @@
 import Link from "next/link";
-import Button from "../components/common/Button";
-import PostCard from "../components/feed/PostCard";
-import WelcomeBlock from "../components/home/WelcomeBlock";
-import { getCurrentUser } from "@/lib/auth-server";
+import Button from "@/shared/ui/Button";
+import PostCard from "@/features/feed/components/PostCard";
+import WelcomeBlock from "@/features/home/components/WelcomeBlock";
+import { getCurrentUser } from "@/server/auth/auth-server";
 import { redirect } from "next/navigation";
-import { getFeedPosts } from "@/lib/helpers/feedData";
+import { getFeedPosts } from "@/server/services/feedData";
 
 export default async function Home() {
   const user = await getCurrentUser();

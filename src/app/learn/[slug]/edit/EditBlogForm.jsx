@@ -4,8 +4,8 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 // import { updatePost } from "@/actions/posts";
-import { updatePost } from "@/lib/actions (for mutations only, server actions)/blogActions";
-import Button from "@/components/common/Button";
+import { updatePost } from "@/server/actions/blogActions";
+import Button from "@/shared/ui/Button";
 import { toast } from "sonner";
 
 export default function EditBlogForm({ post }) {

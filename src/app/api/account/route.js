@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
-import prisma from "@/lib/prisma"
-import { getCurrentUser } from "@/lib/auth-server"
+import prisma from "@/server/db/prisma"
+import { getCurrentUser } from "@/server/auth/auth-server"
 import bcrypt from "bcryptjs"
 
 export async function GET() {
