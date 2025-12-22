@@ -6,10 +6,13 @@ import PhotoDetailClient from "./PhotoDetailClient";
 
 export default async function PhotoDetailPage({ params, searchParams }) {
   const resolvedParams = await params;
+  const resolvedSearchParams = await searchParams;
+
   const photoId = resolvedParams.photoId;
 
-  const resolvedSearchParams = await searchParams;
-  const galleryParam = resolvedSearchParams.gallery;
+  const from = resolvedSearchParams.from || null;
+  const galleryParam = resolvedSearchParams.gallery || "";
+  const returnTo = resolvedSearchParams.returnTo || null;
 
   const post = await getPostById(photoId);
 
@@ -18,10 +21,17 @@ export default async function PhotoDetailPage({ params, searchParams }) {
   }
 
 
-   // Parse gallery IDs from query string
-   const galleryIds = galleryParam ? galleryParam.split(',') : [];
+  // Parse gallery IDs from query string
+  //  const galleryData = galleryParam ? galleryParam.split(',') : [];
+  const galleryData = galleryParam ? galleryParam.split(",").filter(Boolean) : [];
 
-  return <PhotoDetailClient post={post} galleryIds={galleryIds} />;
+  return <PhotoDetailClient
+    post={post}
+    galleryData={galleryData}
+    from={from}
+    returnTo={returnTo}
+  />
+  // <PhotoDetailClient post={post} galleryData={galleryData} origin={origin} />;
 }
 
 export async function generateMetadata({ params }) {

@@ -4,7 +4,7 @@ import prisma from "@/server/db/prisma";
 import { getCurrentUser } from "@/server/auth/auth-server";
 import { revalidatePath } from "next/cache";
 import { uploadImage } from "@/server/services/cloudinary";
-
+import { invalidateFeedCache, invalidateProfileCache } from "../services/redis/cache-invalidation";
 const MAX_FILES = 10;
 const MAX_SIZE = 10 * 1024 * 1024; // 10MB
 
@@ -93,6 +93,18 @@ export async function uploadPhotos(formData) {
 
       created.push(result);
     }
+
+
+        // ✅ Invalidate caches
+        const profile = await prisma.profile.findUnique({
+          where: { id: user.id },
+          select: { username: true },
+        });
+    
+        await Promise.all([
+          invalidateFeedCache([user.id]), // Invalidate user's feed cache
+          profile?.username ? invalidateProfileCache(profile.username) : null,
+        ]);
   
       //   const photo = await prisma.photo.create({
       //     data: {
@@ -193,6 +205,10 @@ export async function likePost(postId) {
       });
 
       const likeCount = await prisma.like.count({ where: { postId } });
+
+          // ✅ Invalidate feed cache for user
+          await invalidateFeedCache([user.id]);
+
       revalidatePath("/feed");
       revalidatePath(`/post/${postId}`);
 
@@ -228,6 +244,9 @@ export async function likePost(postId) {
       });
 
       const likeCount = await prisma.like.count({ where: { postId } });
+      // ✅ Invalidate feed cache for user
+      await invalidateFeedCache([user.id]);
+
       revalidatePath("/feed");
       revalidatePath(`/post/${postId}`);
 
@@ -324,6 +343,19 @@ export async function repostPost(postId) {
       });
 
       const repostCount = await prisma.repost.count({ where: { postId } });
+
+        // ✅ Invalidate caches
+        const profile = await prisma.profile.findUnique({
+          where: { id: user.id },
+          select: { username: true },
+        });
+  
+        await Promise.all([
+          invalidateFeedCache([user.id]),
+          profile?.username ? invalidateProfileCache(profile.username) : null,
+        ]);
+
+
       revalidatePath("/feed");
       revalidatePath(`/post/${postId}`);
       revalidatePath("/profile");
@@ -387,6 +419,19 @@ export async function repostPost(postId) {
       });
 
       const repostCount = await prisma.repost.count({ where: { postId } });
+
+         // ✅ Invalidate caches
+         const profile = await prisma.profile.findUnique({
+          where: { id: user.id },
+          select: { username: true },
+        });
+  
+        await Promise.all([
+          invalidateFeedCache([user.id]),
+          profile?.username ? invalidateProfileCache(profile.username) : null,
+        ]);
+
+
       revalidatePath("/feed");
       revalidatePath(`/post/${postId}`);
       revalidatePath("/profile");
@@ -456,6 +501,18 @@ export async function deletePost(postId) {
       }
     }
 
+       // ✅ Invalidate caches
+       const profile = await prisma.profile.findUnique({
+        where: { id: user.id },
+        select: { username: true },
+      });
+  
+      await Promise.all([
+        invalidateFeedCache([user.id]),
+        profile?.username ? invalidateProfileCache(profile.username) : null,
+      ]);
+
+
     revalidatePath("/feed");
     revalidatePath("/profile");
 
@@ -465,66 +522,3 @@ export async function deletePost(postId) {
     return { error: "Failed to delete post" };
   }
 }
-
-// export async function uploadPhotos(formData) {
-//     try {
-//       const user = await getCurrentUser();
-//       if (!user) return { error: "Not authenticated" };
-  
-//       const files = formData.getAll("photos");
-  
-//       if (!files || files.length === 0) {
-//         return { error: "Please select at least one photo" };
-//       }
-  
-//       if (files.length > MAX_FILES) {
-//         return { error: `You can upload a maximum of ${MAX_FILES} photos at once` };
-//       }
-  
-//       // Validate on server too (client checks can be bypassed)
-//       for (const file of files) {
-//         if (!file || typeof file !== "object") {
-//           return { error: "Invalid file upload" };
-//         }
-  
-//         if (!file.type?.startsWith("image/")) {
-//           return { error: "Only image files are allowed" };
-//         }
-  
-//         if (file.size > MAX_SIZE) {
-//           return { error: "Each file must be less than 10MB" };
-//         }
-//       }
-  
-//       // Upload each file to Cloudinary
-//       const uploads = [];
-//       for (const file of files) {
-//         const uploaded = await uploadImage(file, `photos/${user.id}`);
-//         uploads.push({ file, uploaded });
-//       }
-  
-//       // Store in DB, adjust model names/fields to your schema
-//       // Example model: Photo or Post
-//       // Change prisma.photo to prisma.post if that’s what you use
-//       await prisma.photo.createMany({
-//         data: uploads.map(({ uploaded }) => ({
-//           userId: user.id,
-//           imageUrl: uploaded.url,
-//           thumbUrl: uploaded.thumbUrl,
-//           cloudinaryPublicId: uploaded.publicId,
-//           width: uploaded.width,
-//           height: uploaded.height,
-//           format: uploaded.format,
-//         })),
-//       });
-  
-//       // Refresh pages that show photos
-//       revalidatePath("/feed");
-//       revalidatePath("/profile");
-  
-//       return { success: true, count: uploads.length };
-//     } catch (err) {
-//       console.error("uploadPhotos error:", err);
-//       return { error: "Failed to upload photos" };
-//     }
-//   }

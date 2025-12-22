@@ -129,6 +129,9 @@ model Photo {
   posts      Post[]        // A photo can be in multiple posts (original + reposts)
 
   createdAt  DateTime      @default(now())
+
+    @@index([userId, createdAt])
+  @@index([visibility, createdAt])
 }
 
 
@@ -156,6 +159,11 @@ model Post {
   repostActions   Repost[]   // Track who reposted
 
   createdAt       DateTime   @default(now())
+
+  @@index([userId, createdAt])
+  @@index([type, createdAt])
+  @@index([photoId])
+  @@index([originalPostId])
 }
 
 // Like model - tracks user likes on posts
@@ -169,6 +177,8 @@ model Like {
   createdAt DateTime @default(now())
 
   @@unique([userId, postId]) // User can only like a post once
+   @@index([postId, createdAt])
+  @@index([userId])
 }
 
 // Repost model - tracks user reposts
@@ -182,6 +192,8 @@ model Repost {
   createdAt DateTime @default(now())
 
   @@unique([userId, postId]) // User can only repost a post once
+    @@index([postId, createdAt])
+  @@index([userId])
 }
 
 // Follow model - tracks follow relationships between users
@@ -196,6 +208,8 @@ model Follow {
   createdAt  DateTime @default(now())
 
   @@id([followerId, followingId]) // Composite pk, forces uniqueness - user can only follow another user once
+    @@index([followerId, createdAt])
+  @@index([followingId, createdAt])
 }
 
 model BlogPost {
@@ -214,6 +228,10 @@ model BlogPost {
 
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
+
+    @@index([status, publishedAt])
+  @@index([userId, status])
+  @@index([slug])
 }
 
 // model HubCollection {
