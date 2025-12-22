@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import prisma from "@/server/db/prisma"
 import { getCurrentUser } from "@/server/auth/auth-server"
-import bcrypt from "bcryptjs"
+// import bcrypt from "bcryptjs"
 
 export async function GET() {
   const currentUser = await getCurrentUser()

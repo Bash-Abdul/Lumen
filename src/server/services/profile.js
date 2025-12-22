@@ -17,6 +17,11 @@ function socialsToLinks(website, socials, email) {
   return links;
 }
 
+
+export async function getProfile(){
+  const data = []
+  return data
+}
 export async function getProfileByUsername(username, postsLimit = 30, repostsLimit = 30) {
   if (!username || typeof username !== "string") return null;
 
