@@ -52,6 +52,14 @@ model User {
   passwordHash String
   role         Role   @default(USER)
 
+    // ✅ ADD THESE TWO LINES
+  emailVerified DateTime?  // null = not verified, date = when they verified
+  isActive      Boolean @default(true)  // for account lockouts later
+
+    // ✅ ADD THESE LINES
+  failedLoginAttempts Int      @default(0)
+  lockedUntil         DateTime?
+
   profile        Profile?
   onboardingDone Boolean  @default(false)
 

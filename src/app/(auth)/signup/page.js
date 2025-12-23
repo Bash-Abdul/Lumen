@@ -132,13 +132,6 @@ export default function SignupPage() {
     }
   }
 
-
-  //  useEffect(() => {
-  //     if (user) {
-  //       router.replace('/');
-  //     }
-  //   }, [user,router]);
-
     
   return (
     <div className="flex items-center justify-center h-full">

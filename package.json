@@ -14,6 +14,7 @@
     "@auth/prisma-adapter": "^2.11.1",
     "@prisma/adapter-pg": "^7.1.0",
     "@prisma/client": "^7.1.0",
+    "@upstash/ratelimit": "^2.0.7",
     "@upstash/redis": "^1.35.8",
     "argon2": "^0.44.0",
     "axios": "^1.13.2",
@@ -26,6 +27,7 @@
     "react": "19.2.0",
     "react-dom": "19.2.0",
     "react-hot-toast": "^2.6.0",
+    "resend": "^6.6.0",
     "sonner": "^2.0.7",
     "zod": "^4.1.13"
   },

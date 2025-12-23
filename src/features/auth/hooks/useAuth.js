@@ -51,6 +51,17 @@ export default function useAuth() {
       })
 
       if (res?.error) {
+
+           // ✅ Check if error is unverified email
+           if (res.error === "UNVERIFIED_EMAIL") {
+            setError("Please verify your email before logging in");
+            return {
+              ok: false,
+              error: "UNVERIFIED_EMAIL",
+              email, // Pass email so UI can show resend button
+            };
+          }
+
         setError(res.error)
         return { ok: false, error: res.error }
       }
@@ -64,6 +75,30 @@ export default function useAuth() {
       setLoading(false)
     }
   }
+
+
+    // ✅ NEW: Resend verification email
+    async function resendVerificationEmail(email) {
+      try {
+        setError(null);
+        setLoading(true);
+  
+        const res = await api.post("/auth/resend-verification", { email });
+  
+        return { ok: true, message: res.data.message };
+      } catch (err) {
+        console.error("Resend verification error", err);
+        const msg =
+          err.response?.data?.message ||
+          err.response?.data?.error ||
+          "Failed to resend verification email";
+        setError(msg);
+        return { ok: false, error: msg };
+      } finally {
+        setLoading(false);
+      }
+    }
+  
 
 // Logout function using NextAuth
   async function logout() {
@@ -96,5 +131,6 @@ export default function useAuth() {
     register,
     login,
     logout,
+    resendVerificationEmail
   }
 }

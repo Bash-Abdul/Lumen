@@ -4,6 +4,9 @@ import prisma from "@/server/db/prisma";
 import { verifyPassword } from "./password";
 import { AuthLoginSchema } from "@/features/auth/validation/auth";
 
+const MAX_FAILED_ATTEMPTS = 5;
+const LOCKOUT_DURATION = 15 * 60 * 1000; // 15 minutes in milliseconds
+
 export const authOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
@@ -31,6 +34,10 @@ export const authOptions = {
             passwordHash: true,
             role: true,
             onboardingDone: true,
+            emailVerified: true,
+            isActive: true,
+            failedLoginAttempts: true,
+            lockedUntil: true,
             profile: {
               select: {
                 displayName: true,
@@ -44,12 +51,85 @@ export const authOptions = {
           throw new Error("Invalid credentials");
         }
 
+         // ✅ Check if account is active
+         if (!user.isActive) {
+          throw new Error("Account has been deactivated. Please contact support.");
+        }
+
+          // ✅ Check if email is verified
+          if (!user.emailVerified) {
+            throw new Error("UNVERIFIED_EMAIL");
+          }
+
+                  // ✅ Check if account is locked
+        if (user.lockedUntil && user.lockedUntil > new Date()) {
+          const remainingMinutes = Math.ceil(
+            (user.lockedUntil.getTime() - Date.now()) / 60000
+          );
+          throw new Error(
+            `Account locked due to too many failed login attempts. Try again in ${remainingMinutes} minute${remainingMinutes === 1 ? "" : "s"}.`
+          );
+        }
+
+        // ✅ If lockout period expired, reset failed attempts
+        if (user.lockedUntil && user.lockedUntil <= new Date()) {
+          await prisma.user.update({
+            where: { id: user.id },
+            data: {
+              failedLoginAttempts: 0,
+              lockedUntil: null,
+            },
+          });
+        }
+  
+
         const isValid = await verifyPassword(user.passwordHash, password);
 
         if (!isValid) {
-          throw new Error("Invalid credentials");
+          // ✅ Increment failed attempts
+          const newFailedAttempts = user.failedLoginAttempts + 1;
+
+          // ✅ Lock account if max attempts reached
+          if (newFailedAttempts >= MAX_FAILED_ATTEMPTS) {
+            const lockUntil = new Date(Date.now() + LOCKOUT_DURATION);
+            
+            await prisma.user.update({
+              where: { id: user.id },
+              data: {
+                failedLoginAttempts: newFailedAttempts,
+                lockedUntil: lockUntil,
+              },
+            });
+
+            throw new Error(
+              `Too many failed login attempts. Account locked for 15 minutes.`
+            );
+          }
+
+          // ✅ Update failed attempts (not locked yet)
+          await prisma.user.update({
+            where: { id: user.id },
+            data: {
+              failedLoginAttempts: newFailedAttempts,
+            },
+          });
+
+          const attemptsRemaining = MAX_FAILED_ATTEMPTS - newFailedAttempts;
+          throw new Error(
+            `Invalid credentials. ${attemptsRemaining} attempt${attemptsRemaining === 1 ? "" : "s"} remaining before account lockout.`
+          );
         }
 
+            // ✅ Successful login - reset failed attempts
+            if (user.failedLoginAttempts > 0 || user.lockedUntil) {
+              await prisma.user.update({
+                where: { id: user.id },
+                data: {
+                  failedLoginAttempts: 0,
+                  lockedUntil: null,
+                },
+              });
+            }
         return {
           id: user.id,
           email: user.email,
