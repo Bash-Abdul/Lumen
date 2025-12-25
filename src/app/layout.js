@@ -5,6 +5,7 @@ import TopBar from "../shared/components/TopBar";
 import MobileBottomNav from "@/shared/components/MobileBottomNav";
 import Providers from "./providers";
 import { Toaster } from "sonner";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const inter = Inter({
   variable: "--font-inter",
@@ -36,7 +37,7 @@ export default function RootLayout({ children }) {
             <Sidebar />
             <div className="flex-1 flex flex-col">
               {/* <TopBar /> */}
-              <main className="flex-1 px-6 py-6">{children}</main>
+              <main className="flex-1 px-6 py-6">{children} <SpeedInsights /></main>
             </div>
           </div>
           <MobileBottomNav />
