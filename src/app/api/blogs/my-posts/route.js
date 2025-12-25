@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import prisma from "@/server/db/prisma";
 import { getCurrentUser } from "@/server/auth/auth-server";
-import { getMyPosts } from "@/server/services/blog";
+// import { getMyPosts } from "@/server/services/blog";
+import { getMyPosts } from "@/features/blog/services/blogService";
 
 // const MapPosts = (post) => (
 //     {

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getFeedPosts } from "@/server/services/feedData";
+import { getFeedPosts } from "@/features/feed/services/feedDataService";
 
 export async function GET(request) {
   try {
