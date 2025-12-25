@@ -4,7 +4,8 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 // import { updatePost } from "@/actions/posts";
-import { updatePost } from "@/server/actions/blogActions";
+// import { updatePost } from "@/server/actions/blogActions";
+import { updatePost } from "@/features/blog/actions/blogActions";
 import Button from "@/shared/ui/Button";
 import { toast } from "sonner";
 

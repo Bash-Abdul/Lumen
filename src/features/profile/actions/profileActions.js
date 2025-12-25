@@ -85,84 +85,84 @@ export async function updateProfile(formData) {
 }
 
 
-export async function updateAccount(formData) {
-  try {
-    const currentUser = await getCurrentUser();
+// export async function updateAccount(formData) {
+//   try {
+//     const currentUser = await getCurrentUser();
 
-    if (!currentUser) {
-      return { error: "Not authenticated" };
-    }
+//     if (!currentUser) {
+//       return { error: "Not authenticated" };
+//     }
 
-    // Extract form data
-    const email = formData.get('email')
-    const prevPassword = formData.get('prevPassword');
-    const newPassword = formData.get('newPassword');
+//     // Extract form data
+//     const email = formData.get('email')
+//     const prevPassword = formData.get('prevPassword');
+//     const newPassword = formData.get('newPassword');
 
-    // ✅ Validate with Zod
-    const validated = AccountSecuritySchema.safeParse({
-      email,
-      prevPassword,
-      newPassword
-    });
+//     // ✅ Validate with Zod
+//     const validated = AccountSecuritySchema.safeParse({
+//       email,
+//       prevPassword,
+//       newPassword
+//     });
 
-    if (!validated.success) {
-      const firstError = validated.error.errors[0];
-      return {
-        error: firstError.message || "Validation failed",
-        field: firstError.path[0],
-      };
-    }
+//     if (!validated.success) {
+//       const firstError = validated.error.errors[0];
+//       return {
+//         error: firstError.message || "Validation failed",
+//         field: firstError.path[0],
+//       };
+//     }
 
-    const data = validated.data;
+//     const data = validated.data;
 
-    const user = await prisma.user.findUnique({
-      where: { id: currentUser.id },
-      select: {
-        id: true,
-        email: true,
-        passwordHash: true,
-      },
-    });
+//     const user = await prisma.user.findUnique({
+//       where: { id: currentUser.id },
+//       select: {
+//         id: true,
+//         email: true,
+//         passwordHash: true,
+//       },
+//     });
 
-    if (!user || !user.passwordHash) {
-      return { ok: false, error: "User not found" };
-    }
+//     if (!user || !user.passwordHash) {
+//       return { ok: false, error: "User not found" };
+//     }
 
-    const valid = await verifyPassword(user.passwordHash, data.prevPassword)
+//     const valid = await verifyPassword(user.passwordHash, data.prevPassword)
 
-    if (!valid) {
-      return { ok: false, error: "Current password is incorrect", field: "prevPassword" };
-    }
+//     if (!valid) {
+//       return { ok: false, error: "Current password is incorrect", field: "prevPassword" };
+//     }
 
-    // if email is changing, make sure it is not already used
-    if (data.email !== user.email) {
-      const existingWithEmail = await prisma.user.findUnique({
-        where: { email: data.email },
-        select: { id: true },
-      });
+//     // if email is changing, make sure it is not already used
+//     if (data.email !== user.email) {
+//       const existingWithEmail = await prisma.user.findUnique({
+//         where: { email: data.email },
+//         select: { id: true },
+//       });
 
-      if (existingWithEmail) {
-        return { ok: false, error: "Email is already in use" };
-      }
-    }
+//       if (existingWithEmail) {
+//         return { ok: false, error: "Email is already in use" };
+//       }
+//     }
 
-    const newHash = await hashPassword(data.newPassword);
+//     const newHash = await hashPassword(data.newPassword);
 
 
-    await prisma.user.update({
-      where: { id: user.id },
-      data: {
-        email: data.email,
-        passwordHash: newHash,
-      },
-    });
+//     await prisma.user.update({
+//       where: { id: user.id },
+//       data: {
+//         email: data.email,
+//         passwordHash: newHash,
+//       },
+//     });
 
-    revalidatePath("/account");
-    revalidatePath("/profile");
+//     revalidatePath("/account");
+//     revalidatePath("/profile");
 
-    return { success: true };
-  } catch (err) {
-    console.error("Profile update error:", err);
-    return { error: `Failed to update profile ${err}` };
-  }
-}
+//     return { success: true };
+//   } catch (err) {
+//     console.error("Profile update error:", err);
+//     return { error: `Failed to update profile ${err}` };
+//   }
+// }

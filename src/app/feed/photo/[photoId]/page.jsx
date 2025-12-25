@@ -1,7 +1,8 @@
 // app/feed/photo/[photoId]/page.js
 import { notFound } from "next/navigation";
 // import { getPostById } from "@/server/services/feedData";
-import { getPostById } from "@/server/services/feedData";
+// import { getPostById } from "@/server/services/feedData";
+import { getPostById } from "@/features/feed/services/feedDataService";
 import FeedPhotoDetailClient from "./FeedPhotoDetailClient";
 
 export default async function FeedPhotoDetailPage({ params, searchParams }) {

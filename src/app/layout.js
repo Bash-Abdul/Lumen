@@ -2,6 +2,7 @@ import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import Sidebar from "../shared/components/Sidebar";
 import TopBar from "../shared/components/TopBar";
+import MobileBottomNav from "@/shared/components/MobileBottomNav";
 import Providers from "./providers";
 import { Toaster } from "sonner";
 
@@ -34,10 +35,11 @@ export default function RootLayout({ children }) {
           <div className="min-h-screen flex">
             <Sidebar />
             <div className="flex-1 flex flex-col">
-              <TopBar />
+              {/* <TopBar /> */}
               <main className="flex-1 px-6 py-6">{children}</main>
             </div>
           </div>
+          <MobileBottomNav />
           <Toaster position="bottom-right" />
         </Providers>
       </body>

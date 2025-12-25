@@ -1,6 +1,7 @@
 // app/api/search/route.js
 import { NextResponse } from "next/server";
-import { searchAll } from "@/server/services/search";
+// import { searchAll } from "@/server/services/search";
+import { searchAll } from "@/features/search/services/searchService";
 
 export async function GET(req) {
   try {

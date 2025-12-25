@@ -249,27 +249,25 @@
 
 // app/account/page.tsx
 import { redirect } from "next/navigation";
-import prisma from "@/server/db/prisma";
 import { getCurrentUser } from "@/server/auth/auth-server";
 import AccountPageClient from "./AccountPageClient"; // client component
-// import { updateAccount } from "./actions";
-import { updateAccount } from "@/server/actions/profileActions";
-// import { getAccount } from "@/server/services/account";
-import { getAccount } from "@/server/services/account";
+import { updateAccount } from "@/features/account/actions/accountAction";
+import { updateAccountProfile } from "@/features/account/actions/accountAction";
+import { getAccount } from "@/features/account/services/accountService";
+import { getAccountProfileData } from "@/features/account/services/accountService";
 
 export default async function AccountPage() {
   const user = await getCurrentUser();
   if (!user) redirect("/login?next=/account");
 
-  const account = await getAccount();
+  // const account = await getAccount();
+  const accountRes = await getAccount();
+  if (accountRes?.ok === false) redirect("/signup");
 
-  // const dbUser = await prisma.user.findUnique({
-  //   where: { id: user.id },
-  //   select: {
-  //     email: true,
-  //     // other fields you want to show/edit
-  //   },
-  // });
+  const account = accountRes.account;
+  // const accountProfile = await getAccountProfileData();
+  const profileRes = await getAccountProfileData();
+  const profile = profileRes?.ok ? profileRes.profile : null;
 
   if (!account) {
     // handle weird case
@@ -283,7 +281,14 @@ export default async function AccountPage() {
         createdAt: account.createdAt
         // more fields...
       }}
+      initialAccountProfile={{
+        name: profile?.displayName || "",
+        username: profile?.username || "",
+        bio: profile?.bio || "",
+        location: profile?.location || "",
+      }}
       updateAccountAction={updateAccount}
+      updateAccountProfileAction={updateAccountProfile}
     />
   );
 }

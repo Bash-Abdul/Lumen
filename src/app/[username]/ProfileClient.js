@@ -9,7 +9,8 @@ import Button from "@/shared/ui/Button";
 import Avatar from "@/shared/ui/Avatar";
 import ProfileTabs from "@/features/profile/components/ProfileTabs";
 import FollowButton from "@/shared/ui/FollowButton";
-import { updateProfile } from "@/server/actions/profileActions";
+// import { updateProfile } from "@/server/actions/profileActions";
+import { updateProfile } from "@/features/profile/actions/profileActions";
 
 import EditProfileDrawer from "@/features/profile/components/EditProfileDrawer";
 import ImageGrid from "@/features/profile/components/ImageGrid";

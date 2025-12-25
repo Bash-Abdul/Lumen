@@ -1,7 +1,8 @@
 // server/services/search.js
 import prisma from "@/server/db/prisma";
-import { getCurrentUser } from "../auth/auth-server";
-import { redis, cacheKeys, cacheTTL } from "./redis/redis";
+import { getCurrentUser } from "@/server/auth/auth-server";
+// import { redis, cacheKeys, cacheTTL } from "./redis/redis";
+import { redis, cacheKeys, cacheTTL } from "@/server/services/redis/redis";
 
 export async function searchAll(query, limit = 10) {
   const q = query.trim();

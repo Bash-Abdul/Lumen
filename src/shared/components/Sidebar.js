@@ -107,3 +107,111 @@ export default function Sidebar() {
     </aside>
   );
 }
+
+// 'use client';
+
+// import Link from "next/link";
+// import { usePathname } from "next/navigation";
+// import Button from "@/shared/ui/Button";
+// import useAuth from "@/features/auth/hooks/useAuth";
+// import { House, Globe, Search, User, Book, BriefcaseBusiness, Settings } from "lucide-react";
+
+// export default function Sidebar() {
+//   const pathname = usePathname();
+//   const { user, isAuthenticated, logout, loading } = useAuth();
+
+//   const navItems = [
+//     { label: "Home", href: "/", icon: House },
+//     { label: "Feed", href: "/feed", icon: Globe },
+//     { label: "Search", href: "/search", icon: Search },
+//     { 
+//       label: "Profile", 
+//       href: user?.username ? `/${user.username}` : "/login",
+//       icon: User,
+//       requiresAuth: true 
+//     },
+//     { label: "Learn", href: "/learn", icon: Book },
+//     { label: "Hub", href: "/hub", requiresPro: true, icon: BriefcaseBusiness },
+//     { label: "Settings", href: "/settings", requiresAuth: true, icon: Settings },
+//   ];
+
+//   return (
+//     <aside className="hidden lg:flex w-64 flex-col border-r border-zinc-800 bg-zinc-950/80 backdrop-blur-md px-5 py-6 gap-6 sticky top-0 h-screen">
+//       {/* Logo */}
+//       <Link href="/" className="flex items-center gap-2">
+//         <div className="text-4xl">📸</div>
+//         <div>
+//           <p className="text-lg font-semibold">Lumen</p>
+//           <p className="text-xs text-zinc-400">Photography playground</p>
+//         </div>
+//       </Link>
+
+//       {/* Navigation */}
+//       <nav className="flex flex-col gap-2">
+//         {navItems
+//           .filter((item) => {
+//             if (item.requiresPro && !user?.isPro) return false;
+//             if (item.requiresAuth && !isAuthenticated) return false;
+//             return true;
+//           })
+//           .map((item) => {
+//             const isActive =
+//               item.href === "/"
+//                 ? pathname === item.href
+//                 : pathname.startsWith(item.href);
+            
+//             const Icon = item.icon;
+            
+//             return (
+//               <Link
+//                 key={item.href}
+//                 href={item.href}
+//                 className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all ${
+//                   isActive
+//                     ? "bg-zinc-800 text-white"
+//                     : "text-zinc-300 hover:bg-zinc-900"
+//                 }`}
+//               >
+//                 <Icon size={20} />
+//                 <span>{item.label}</span>
+//               </Link>
+//             );
+//           })}
+//       </nav>
+
+//       {/* Bottom CTA */}
+//       <div className="mt-auto space-y-3">
+//         {!user?.isPro && (
+//           <div className="rounded-xl border border-zinc-800 p-4 bg-zinc-900/50">
+//             <p className="text-sm text-zinc-300 mb-3">
+//               Upgrade to PRO for portfolio site & client galleries
+//             </p>
+//             <Button href="/pricing" size="sm" className="w-full">
+//               Go PRO
+//             </Button>
+//           </div>
+//         )}
+
+//         {isAuthenticated ? (
+//           <>
+//             <Button href="/learn/new" className="w-full">
+//               Create Post
+//             </Button>
+//             <Button
+//               onClick={logout}
+//               disabled={loading}
+//               variant="outline"
+//               className="w-full cursor-pointer"
+//             >
+//               {loading ? 'Signing out...' : 'Sign Out'}
+//             </Button>
+//           </>
+//         ) : (
+//           <Button href="/signup" className="w-full">
+//             Sign Up
+//           </Button>
+//         )}
+//       </div>
+//     </aside>
+//   );
+// }

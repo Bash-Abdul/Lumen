@@ -3,7 +3,8 @@ import "server-only";
 import { prisma } from "@/server/db/prisma";
 import { getCurrentUser } from "@/server/auth/auth-server";
 // import { redis, cacheKeys, cacheTTL } from "@/lib/redis";
-import { redis, cacheKeys, cacheTTL } from "./redis/redis";
+// import { redis, cacheKeys, cacheTTL } from "./redis/redis";
+import { redis, cacheKeys, cacheTTL } from "@/server/services/redis/redis";
 
 function transformPost(post, currentUserId) {
   const isRepost = post.type === "REPOST" && post.originalPost;

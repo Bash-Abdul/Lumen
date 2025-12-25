@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import Button from "@/shared/ui/Button";
-import { deletePost } from "@/server/actions/blogActions";
+// import { deletePost } from "@/server/actions/blogActions";
+import { deletePost } from "../actions/blogActions";
 import { useRouter } from "next/navigation";
 import { useTransition, useState } from "react";
 import { toast } from "sonner";

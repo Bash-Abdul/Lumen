@@ -108,7 +108,7 @@ export default function useAuth() {
       await signOut({ redirect: false })
       // redirect('/')
       // window.location.href= '/';
-      router.push('/');
+      router.push('/login');
       // you can manually redirect if you want:
       // window.location.href = "/"
     } catch (err) {

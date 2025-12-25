@@ -1,7 +1,7 @@
 import prisma from "@/server/db/prisma";
 import { getCurrentUser } from "@/server/auth/auth-server";
 
-export async function getProfileData(){
+export async function getAccountProfileData(){
     const currentUser = await getCurrentUser();
 
     if (!currentUser) {
@@ -10,13 +10,20 @@ export async function getProfileData(){
 
     const profile = await prisma.profile.findUnique({
         where: { id: currentUser.id },
+        select: {
+          displayName: true,
+          username: true,
+          location: true,
+          bio: true,
+        }
       })
 
       if (!profile) {
         return { ok: false, code: "NOT_FOUND", error: "Profile not found" };
       }
 
-      return profile
+
+      return {ok: true, profile}
 }
 
 export async function getAccount(){
@@ -40,8 +47,11 @@ export async function getAccount(){
   }
 
   return {
-    id: user.id,
-    email:user.email,
-    createdAt: user.createdAt
+    ok: true,
+    account: {
+      id: user.id,
+      email: user.email,
+      createdAt: user.createdAt,
+    },
   }
 }

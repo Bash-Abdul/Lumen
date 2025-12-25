@@ -61,7 +61,8 @@
 
 import { getCurrentUser } from "@/server/auth/auth-server";
 // import { getFeedPosts } from "@/server/services/feedData";
-import { getFeedPosts } from "@/server/services/feedData";
+// import { getFeedPosts } from "@/server/services/feedData";
+import { getFeedPosts } from "@/features/feed/services/feedDataService";
 import FeedClient from "./FeedClient";
 
 export default async function FeedPage({ searchParams }) {
